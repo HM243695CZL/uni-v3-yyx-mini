@@ -24,6 +24,25 @@
 				"navigationBarTitleText": "个人中心"
 			}
 		}
+    ],
+	"subPackages": [
+		{
+			"root": "sub",
+			"pages": [
+				{ 
+					"path": "login/login",
+					"style": {
+						"navigationBarTitleText": "账号登录"
+					}
+				},
+				{
+					"path": "register/register",
+					"style": {
+						"navigationBarTitleText": "账号注册"
+					}
+				}
+			]
+		}
 	],
 	"tabBar": {
 		"color": "#000",

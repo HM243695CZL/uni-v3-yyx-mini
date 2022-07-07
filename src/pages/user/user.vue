@@ -2,7 +2,7 @@
 	<view class="user-container">
 		<view class="head-card flex-between">
 			<view class="left">
-				<view class="name">{{state.username === '' ? '点击登录' : state.username}}</view>
+				<view class="name" @click="showLogin()">{{state.username === '' ? '点击登录' : state.username}}</view>
 			</view>
 			<image v-if="state.username !== ''" class="img-avatar" mode="aspectFill" src="https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp"></image>
 		</view>
@@ -47,6 +47,11 @@
 			{ value: 'advise', text: '意见反馈', icon: 'info'}
 		]
 	});
+	const showLogin = () => {
+		uni.navigateTo({
+			url: "/sub/login/login"
+		})
+	}
 </script>
 
 

@@ -12,8 +12,16 @@ page{
   justify-content: flex-start;
   align-items: center;
 }
+.flex-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 .text-over{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.w100{
+	width: 100%;
 }
