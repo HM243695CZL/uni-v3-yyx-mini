@@ -4,18 +4,10 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
+<script setup lang="ts">
+	import { ref } from 'vue'
 </script>
+
 
 <style>
 

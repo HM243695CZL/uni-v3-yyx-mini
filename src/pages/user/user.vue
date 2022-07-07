@@ -1,22 +1,120 @@
 <template>
-	<view>
-		个人中心
+	<view class="user-container">
+		<view class="head-card flex-between">
+			<view class="left">
+				<view class="name">{{state.username === '' ? '点击登录' : state.username}}</view>
+			</view>
+			<image v-if="state.username !== ''" class="img-avatar" mode="aspectFill" src="https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp"></image>
+		</view>
+		<view class="order-status-list flex-between">
+			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value">
+				<uni-icons class="icon" :type="item.icon" size="30"></uni-icons>
+				{{item.text}}
+			</view>
+		</view>
+		<view class="icon-list">
+			<view class="icon-list-item flex-between" v-for="item in state.iconList" :key="item.value">
+				<view class="icon-list-item-left flex-start">
+					<uni-icons class="icon" :type="item.icon" size="20"></uni-icons>
+					<view class="item-text">{{item.text}}</view>
+				</view>
+				<uni-icons class="icon" type="right" size="20"></uni-icons>
+			</view>
+		</view>
+		<view class="logout-btn" v-if="state.username !== ''">
+			<view class="logout">退出登录</view>
+		</view>
+		<view class="technical-support">
+			HL243695CZYN提供技术支持
+		</view>
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
+<script setup lang="ts">
+	import { ref, reactive, toRefs } from 'vue';
+	const state = reactive({
+		username: '',
+		orderStatusList: [
+			{ value: 'all', text: '全部订单', icon: 'wallet' },
+			{ value: 'pending-pay', text: '待付款', icon: 'settings-filled' },
+			{ value: 'pending-receive', text: '待收货', icon: 'calendar' },
+			{ value: 'pending-evaluate', text: '待评价', icon: 'chat' }
+		],
+		iconList: [
+			{ value: 'coupon', text: '我的优惠券', icon: 'vip'},
+			{ value: 'address', text: '我的地址', icon: 'location'},
+			{ value: 'collection', text: '我的收藏', icon: 'star'},
+			{ value: 'advise', text: '意见反馈', icon: 'info'}
+		]
+	});
 </script>
 
-<style>
 
+<style lang="scss">
+	.user-container{
+		font-size: $uni-font-size-base;
+		background-color: $uni-color-white;
+		height: 100%;
+		.head-card{
+			height: 160rpx;
+			background-color: $uni-color-base;
+			padding: $uni-padding;
+			.left{
+				.name{
+					color: $uni-color-white;
+					font-size: 50rpx;
+				}
+			}
+			.img-avatar{
+				width: 120rpx;
+				height: 120rpx;
+				border-radius: 50%;
+			}
+		}
+		.order-status-list{
+			padding: $uni-padding;
+			.tab-box{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-direction: column;
+				.icon{
+					margin-bottom: $uni-padding-half;
+				}
+			}
+		}
+		.icon-list{
+			margin-top: $uni-padding;
+			padding: 0 $uni-padding;
+			background-color: $uni-color-white;
+			.icon-list-item{
+				padding: $uni-padding 0;
+				border-bottom: 1px solid $uni-color-bd;
+				.item-text{
+					margin-left: $uni-padding-half;
+				}
+				&:last-child{
+					border-bottom: none;
+				}
+			}
+		}
+		.logout-btn{
+			margin-top: $uni-padding;
+			padding: $uni-padding;
+			.logout{
+				border-radius: 10rpx;
+				padding: $uni-padding 0;
+				text-align: center;
+				background-color: #f5f5f5;
+				color: $uni-color-text;
+			}
+		}
+		.technical-support{
+			color: $uni-color-text;
+			text-align: center;
+			height: 150rpx;
+			line-height: 150rpx;
+			font-size: $uni-font-size-sm;
+		}
+	}
 </style>
