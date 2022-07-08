@@ -29,6 +29,12 @@
 		{
 			"root": "sub",
 			"pages": [
+				{
+					"path": "loginMethod/loginMethod",
+					"style": {
+						"navigationBarTitleText": "登录方式"
+					}
+				},
 				{ 
 					"path": "login/login",
 					"style": {

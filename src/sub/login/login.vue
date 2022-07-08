@@ -10,7 +10,6 @@
 				</uni-forms-item>
 			</uni-forms>
 			<button type="primary">登录</button>
-			<button open-type="getUserInfo" @getuserinfo="getMobile" type="primary">一键登录</button>
 			<view class="form-bottom flex-between">
 				<text class="register" @click="showRegister()">注册账号</text>
 				<text class="forget">忘记密码</text>
@@ -21,9 +20,6 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import { onShow } from '@dcloudio/uni-app';
-	import { SUCCESS_CODE } from '@/utils/request';
-	import { getSessionIdApi }  from '@/api/user';
 	const state = reactive({
 		form: {
 			username: '',
@@ -47,33 +43,6 @@
 			url: '/sub/register/register'
 		});
 	};
-	const getMobile = (info) => {
-		console.log(info)
-	};
-	const getSessionId = () => {
-		uni.login({
-			provider: "weixin",
-			success: res => {
-				getSessionIdApi({
-					code: res.code
-				}).then(result => {
-					if (result.status === SUCCESS_CODE) {
-						uni.setStorageSync("sessionId", result.data.sessionId);
-					}
-				})
-			}
-		})
-	};
-	onShow(() => {
-		uni.checkSession({
-			success: data => {
-				getSessionId()
-			},
-			fail: err => {
-				getSessionId();
-			}
-		})
-	})
 </script>
 
 <style lang="scss">
@@ -85,6 +54,7 @@
 		.form{
 			margin-top: 100rpx;
 			button{
+				color: $uni-color-white;
 				background-color: $uni-color-base;
 			}
 			.form-bottom{

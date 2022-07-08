@@ -2,9 +2,9 @@
 	<view class="user-container">
 		<view class="head-card flex-between">
 			<view class="left">
-				<view class="name" @click="showLogin()">{{state.username === '' ? '点击登录' : state.username}}</view>
+				<view class="name" @click="showLoginMethod()">{{state.userInfo.id ? state.userInfo.nickname : '点击登录'}}</view>
 			</view>
-			<image v-if="state.username !== ''" class="img-avatar" mode="aspectFill" src="https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp"></image>
+			<image v-if="state.userInfo.id" class="img-avatar" mode="aspectFill" :src="state.userInfo.avatar"></image>
 		</view>
 		<view class="order-status-list flex-between">
 			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value">
@@ -21,8 +21,8 @@
 				<uni-icons class="icon" type="right" size="20"></uni-icons>
 			</view>
 		</view>
-		<view class="logout-btn" v-if="state.username !== ''">
-			<view class="logout">退出登录</view>
+		<view class="logout-btn" v-if="state.userInfo.id">
+			<view class="logout" @click="logout()">退出登录</view>
 		</view>
 		<view class="technical-support">
 			HL243695CZYN提供技术支持
@@ -32,8 +32,10 @@
 
 <script setup lang="ts">
 	import { ref, reactive, toRefs } from 'vue';
+	import { onLoad, onShow } from '@dcloudio/uni-app';
+	import { getUserInfoApi } from '@/api/user';
 	const state = reactive({
-		username: '',
+		userInfo: {},
 		orderStatusList: [
 			{ value: 'all', text: '全部订单', icon: 'wallet' },
 			{ value: 'pending-pay', text: '待付款', icon: 'settings-filled' },
@@ -47,11 +49,31 @@
 			{ value: 'advise', text: '意见反馈', icon: 'info'}
 		]
 	});
-	const showLogin = () => {
+	const showLoginMethod = () => {
+		if (state.userInfo.id) return false;
 		uni.navigateTo({
-			url: "/sub/login/login"
+			url: '/sub/loginMethod/loginMethod'
 		})
-	}
+	};
+	const getUserInfo = refresh => {
+		getUserInfoApi({
+			refresh
+		}).then(res => {
+			state.userInfo = res.data;
+		})
+	};
+	const logout = () => {
+		uni.clearStorage();
+		state.userInfo = {};
+	};
+	onLoad(option => {
+		uni.getStorage({
+			key: 'token',
+			success: res => {
+				getUserInfo(option.refresh);
+			}
+		})
+	});
 </script>
 
 
