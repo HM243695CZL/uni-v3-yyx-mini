@@ -22,6 +22,8 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
+	import { SUCCESS_CODE } from '@/utils/request';
+	import { accountRegisterApi } from '@/api/user';
 	const formRef = ref();
 	const state = reactive({
 		form: {
@@ -56,7 +58,41 @@
 	const register = () => {
 		formRef.value.validate(valid => {
 			if (valid === null){
-				
+				uni.login({
+					provider: 'weixin',
+					success: res => {
+						registerHandler(res.code);
+					}
+				})
+			}
+		})
+	};
+	const registerHandler = code => {
+		accountRegisterApi({
+			username: state.form.username,
+			password: state.form.password,
+			mobile: state.form.mobile,
+			code
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.setStorage({
+					key: "token",
+					data: res.data.token,
+					success: () => {
+						uni.reLaunch({
+							url: '../../pages/user/user?refresh=true'
+						})
+					}
+				});
+				uni.showToast({
+					title: '登录成功',
+					icon: 'none'
+				})
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: '登录失败，请联系管理员'
+				})
 			}
 		})
 	}

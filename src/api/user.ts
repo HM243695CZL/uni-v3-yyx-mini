@@ -1,8 +1,8 @@
 import {request} from '@/utils/request';
-
+const preUrl = 'cms/user/';
 export const getSessionIdApi = (data, status) => {
 	return request({
-		url: 'cms/user/getSessionId',
+		url: preUrl + 'getSessionId',
 		method: 'get',
 		data
 	}, status)
@@ -10,7 +10,7 @@ export const getSessionIdApi = (data, status) => {
 
 export const authLoginApi = data => {
 	return request({
-		url: 'cms/user/loginByWeixin',
+		url: preUrl + 'loginByWeixin',
 		method: 'post',
 		data
 	})
@@ -18,7 +18,15 @@ export const authLoginApi = data => {
 
 export const getUserInfoApi = data => {
 	return request({
-		url: 'cms/user/getUserInfo?refresh=' + data.refresh,
+		url: preUrl + 'getUserInfo?refresh=' + data.refresh,
 		method: 'get'
+	})
+}
+
+export const accountRegisterApi = data => {
+	return request({
+		url: preUrl + 'register',
+		method: 'post',
+		data
 	})
 }

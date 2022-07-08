@@ -13,6 +13,7 @@
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { getSessionIdApi, authLoginApi }  from '@/api/user';
 	const getUserInfo = (info) => {
+		console.log(info)
 		const wxAuth = {
 			encryptedData: info.detail.encryptedData,
 			iv: info.detail.iv,
@@ -49,7 +50,7 @@
 					code: res.code
 				}, false).then(result => {
 					if (result.status === SUCCESS_CODE) {
-						uni.setStorageSync("sessionId", result.data.sessionId);
+						uni.setStorageSync('sessionId', result.data.sessionId);
 					}
 				})
 			}
