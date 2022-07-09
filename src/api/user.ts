@@ -30,3 +30,11 @@ export const accountRegisterApi = data => {
 		data
 	})
 }
+
+export const accountLoginApi = data => {
+	return request({
+		url: preUrl + 'accountLogin',
+		method: 'post',
+		data
+	})
+}

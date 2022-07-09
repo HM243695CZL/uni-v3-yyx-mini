@@ -6,10 +6,10 @@
 					<uni-easyinput v-model="state.form.username" placeholder="请输入账号" />
 				</uni-forms-item>
 				<uni-forms-item label="密码" required name="password">
-					<uni-easyinput v-model="state.form.password" placeholder="请输入密码" />
+					<uni-easyinput v-model="state.form.password" type="password" placeholder="请输入密码" />
 				</uni-forms-item>
 			</uni-forms>
-			<button type="primary">登录</button>
+			<button type="primary" @click="clickLogin()">登录</button>
 			<view class="form-bottom flex-between">
 				<text class="register" @click="showRegister()">注册账号</text>
 				<text class="forget">忘记密码</text>
@@ -20,6 +20,8 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
+	import { SUCCESS_CODE } from '@/utils/request';
+	import { accountLoginApi } from '@/api/user';
 	const state = reactive({
 		form: {
 			username: '',
@@ -38,6 +40,33 @@
 			}
 		}
 	});
+	const clickLogin = () => {
+		accountLoginApi({
+			username: state.form.username,
+			password: state.form.password
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.setStorage({
+					key: "token",
+					data: res.data.token,
+					success: () => {
+						uni.reLaunch({
+							url: '../../pages/user/user?refresh=true'
+						})
+					}
+				});
+				uni.showToast({
+					title: '登录成功',
+					icon: 'none'
+				})
+			}  else {
+				uni.showToast({
+					icon: 'none',
+					title: '登录失败，请联系管理员'
+				})
+			}
+		})
+	};
 	const showRegister = () => {
 		uni.navigateTo({
 			url: '/sub/register/register'
