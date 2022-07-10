@@ -46,6 +46,12 @@
 					"style": {
 						"navigationBarTitleText": "账号注册"
 					}
+				},
+				{
+					"path": "goodsInfo/goodsInfo",
+					"style": {
+						"navigationBarTitleText": "商品信息"
+					}
 				}
 			]
 		}

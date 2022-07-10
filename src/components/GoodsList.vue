@@ -1,7 +1,9 @@
 <template>
 	<view class="goods-list-container">
 		<view class="goods-list-box" v-if="props.goods.length > 0">
-			<view class="goods-item" v-for="item in props.goods" :key="item.id">
+			<view class="goods-item" v-for="item in props.goods" :key="item.id"
+					@click="showGoodsInfo(item.id)"
+			>
 				<view class="img-pic">
 					<image mode="aspectFit" :src="item.picUrl"></image>
 				</view>
@@ -23,6 +25,12 @@
 			type: Array
 		}
 	});
+	
+	const showGoodsInfo = id => {
+		uni.navigateTo({
+			url: '/sub/goodsInfo/goodsInfo?id=' + id
+		})
+	}
 </script>
 
 <style lang="scss">
