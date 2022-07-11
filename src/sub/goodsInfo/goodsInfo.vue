@@ -28,7 +28,7 @@
 				<view class="value">{{item.value}}</view>
 			</view>
 		</view>
-		<ParseHtml :htmlStr="state.goodsInfo.goods.detail" />
+		<ParseHtml :content="state.goodsInfo.goods.detail" />
 	</view>
 </template>
 
