@@ -21,7 +21,9 @@
 	});
 	const formatParse = () => {
 		const regex = new RegExp('<img','gi');
-		return props.content.replace(regex,'<img style="width:100%;"');
+		const regexStyle = new RegExp('style=""','gi');
+		const content = props.content.replace(regexStyle, '');
+		return content.replace(regex,'<img style="width:100%;"');
 	}
 </script>
 
