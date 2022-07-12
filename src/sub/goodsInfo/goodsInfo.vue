@@ -29,6 +29,18 @@
 			</view>
 		</view>
 		<ParseHtml :content="state.goodsInfo.goods.detail" />
+		<view class="common-question">
+			<view class="title">常见问题</view>
+			<view class="question-list">
+				<view class="question-item" v-for="item in state.questionList" :key="item.id">
+					<view class="question">
+						<text class="circle"></text>
+					{{item.question}}
+					</view>
+					<view class="answer">{{item.answer}}</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -36,6 +48,7 @@
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
 	import { getGoodsInfoApi } from '@/api/goods';
+	import { getIssueListApi } from '@/api/issue';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import ParseHtml from '@/components/ParseHtml';
 	
@@ -54,7 +67,8 @@
 			color: '#fff',
 			selectedBackgroundColor: '#fff',
 			selectedBorder: '1px #fff solid'
-		}
+		},
+		questionList: []
 	});
 	
 	const change = e => {
@@ -72,9 +86,18 @@
 		})
 	};
 	
+	const getIssueList = () => {
+		getIssueListApi().then(res => {
+			if (res.status === SUCCESS_CODE) {
+				state.questionList = res.data;
+			}
+		})
+	}
+	
 	onLoad(option => {
 		state.goodsId = option.id;
 		getGoodsInfo();
+		getIssueList();
 	})
 </script>
 
@@ -143,6 +166,33 @@
 				.value{
 					flex: 1;
 					padding-left: $uni-padding;
+				}
+			}
+		}
+		.common-question{
+			background-color: $uni-color-white;
+			padding: $uni-padding;
+			box-sizing: border-box;
+			.title{
+				font-weight: bold;
+				font-size: $uni-font-size-lg;
+			}
+			.question-list{
+				.question-item{
+					padding: $uni-padding 0;
+					.question{
+						.circle{
+							display: inline-block;
+							width: 10rpx;
+							height: 10rpx;
+							margin-right: $uni-padding-half;
+							background: $uni-color-base;
+						}
+					}
+					.answer{
+						color: $uni-color-gray;
+						line-height: 50rpx;
+					}
 				}
 			}
 		}
