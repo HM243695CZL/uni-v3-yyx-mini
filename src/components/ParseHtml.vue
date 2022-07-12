@@ -1,34 +1,21 @@
 <template>
 	<view class="parse-html-container">
-		<uParse :content="formatParse()" :imageProp="state.imageProp" />
+		<mp-html :content="props.content" />
 	</view>
 </template>
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import uParse from '@/components/u-parse/u-parse.vue';
 	const props = defineProps({
 		content: {
 			type: String,
 			default: ''
 		}
 	});
-	const state = reactive({
-		imageProp: {
-			mode: 'scaleToFill'
-		},
-	});
-	const formatParse = () => {
-		const regex = new RegExp('<img','gi');
-		const regexStyle = new RegExp('style=""','gi');
-		const content = props.content.replace(regexStyle, '');
-		return content.replace(regex,'<img style="width:100%;"');
-	}
 </script>
 
 <style lang="scss">
-	@import url('@/components/u-parse/u-parse.css');
 	.parse-html-container{
 		background-color: $uni-color-white;
 		padding: $uni-padding;

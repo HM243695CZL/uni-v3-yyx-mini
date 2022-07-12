@@ -17,7 +17,7 @@
 				<text class="view-retail-price">现价: ￥{{state.goodsInfo.goods.retailPrice}}</text>
 			</view>
 		</view>
-		<view class="select-specification flex-between">
+		<view class="select-specification flex-between" @click="chooseSpecification()">
 			<view class="title">请选择规格数量</view>
 			<uni-icons class="icon" type="right" size="20"></uni-icons>
 		</view>
@@ -41,6 +41,8 @@
 				</view>
 			</view>
 		</view>
+		<ChooseSpecifition :info="state.specificationInfo" ref="chooseSpecifitionRef" />
+		<CartBar />
 	</view>
 </template>
 
@@ -51,7 +53,10 @@
 	import { getIssueListApi } from '@/api/issue';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import ParseHtml from '@/components/ParseHtml';
+	import CartBar from '@/components/CartBar';
+	import ChooseSpecifition from '@/components/ChooseSpecifition';
 	
+	const chooseSpecifitionRef = ref();
 	const state = reactive({
 		goodsId: null,
 		goodsInfo: {
@@ -68,7 +73,11 @@
 			selectedBackgroundColor: '#fff',
 			selectedBorder: '1px #fff solid'
 		},
-		questionList: []
+		questionList: [],
+		specificationInfo: {
+			products: [],
+			specifications: []
+		}
 	});
 	
 	const change = e => {
@@ -82,6 +91,8 @@
 			if (res.status === SUCCESS_CODE) {
 				state.goodsInfo = res.data;
 				state.info = JSON.parse(state.goodsInfo.goods.gallery);
+				state.specificationInfo.productsres.data.products;
+				state.specifications.productsres.data.specifications;
 			}
 		})
 	};
@@ -92,7 +103,11 @@
 				state.questionList = res.data;
 			}
 		})
-	}
+	};
+	
+	const chooseSpecification = () => {
+		chooseSpecifitionRef.value.openPopup()
+	};
 	
 	onLoad(option => {
 		state.goodsId = option.id;
@@ -104,7 +119,7 @@
 <style lang="scss">
 	.goods-info-container{
 		background-color: $uni-color-bg;
-		height: 100%;
+		padding-bottom: 100rpx;
 		.swiper-box{
 			height: 600rpx;
 			.swiper-item{
