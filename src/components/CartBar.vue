@@ -1,6 +1,6 @@
 <template>
-	<view class="cart-bar-container">
-		<uni-goods-nav :options="state.options" :fill="true" 
+	<view class="cart-bar-container" :style="props.isFixed ? state.cartStyle : {}">
+		<uni-goods-nav :options="props.isFixed ? state.options : []" :fill="true" 
 			:button-group="state.buttonGroup" @click="onClick"
 			@buttonClick="buttonClick" 
 		/>
@@ -9,7 +9,19 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
+	const props = defineProps({
+		isFixed: {
+			type: Boolean,
+			default: true
+		}
+	})
 	const state = reactive({
+		cartStyle: {
+			position: 'fixed',
+			bottom: 0,
+			left: 0,
+			right: 0
+		},
 		options: [
 			{
 				icon: 'star',
@@ -45,10 +57,5 @@
 
 
 <style lang="scss">
-	.cart-bar-container{
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-	}
+	
 </style>

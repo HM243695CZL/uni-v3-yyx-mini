@@ -24,7 +24,7 @@
 		<view class="params">
 			<view class="params-title">商品参数</view>
 			<view class="params-row" v-for="item in state.goodsInfo.attributes" :key="item.id">
-				<view class="key text-over">{{item.attribute}}</view>
+				<view class="key text-over">{{item.attribute}} :</view>
 				<view class="value">{{item.value}}</view>
 			</view>
 		</view>
@@ -41,7 +41,7 @@
 				</view>
 			</view>
 		</view>
-		<ChooseSpecifition :info="state.specificationInfo" ref="chooseSpecifitionRef" />
+		<ChooseSpecifition :info="state.goodsInfo" ref="chooseSpecifitionRef" />
 		<CartBar />
 	</view>
 </template>
@@ -61,7 +61,7 @@
 		goodsId: null,
 		goodsInfo: {
 			goods: {},
-			attributes: []
+			specificationList: []
 		},
 		info: [],
 		current: 0,
@@ -73,11 +73,7 @@
 			selectedBackgroundColor: '#fff',
 			selectedBorder: '1px #fff solid'
 		},
-		questionList: [],
-		specificationInfo: {
-			products: [],
-			specifications: []
-		}
+		questionList: []
 	});
 	
 	const change = e => {
@@ -89,10 +85,9 @@
 			goodsId: state.goodsId
 		}).then(res => {
 			if (res.status === SUCCESS_CODE) {
-				state.goodsInfo = res.data;
+				state.goodsInfo.goods = res.data.goods;
 				state.info = JSON.parse(state.goodsInfo.goods.gallery);
-				state.specificationInfo.productsres.data.products;
-				state.specifications.productsres.data.specifications;
+				state.goodsInfo.specificationList = res.data.specificationList;
 			}
 		})
 	};
