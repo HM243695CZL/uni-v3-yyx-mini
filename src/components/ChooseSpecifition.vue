@@ -7,14 +7,14 @@
 					<view class="info">
 						<text class="price">￥99</text>
 						<text class="tip">
-							<text v-if="state.unselectedName.length === 0">
+							<text v-if="state.typeName.length === state.unselectedName.length">
 								请选择 <text class="tag" v-for="item in state.typeName" :key="item">{{item}}</text>
 							</text>
-							<text v-else-if="state.typeName.length === state.selectedName.length">
-								已选 <text class="tag" v-for="item in state.selectedValue" :key="item">{{item}}</text>
+							<text v-if="state.unselectedName.length < state.typeName.length && state.unselectedName.length > 0">
+								请选择 <text class="tag" v-for="item in state.unselectedName" :key="item">{{item}}</text>
 							</text>
-							<text v-else>
-								请选择1 <text class="tag" v-for="item in state.unselectedName" :key="item">{{item}}</text>
+							<text v-if="state.unselectedName.length === 0">
+								已选 <text class="tag" v-for="item in state.selectedShowValue" :key="item">{{item}}</text>
 							</text>
 						</text>
 					</view>
@@ -25,7 +25,7 @@
 							<view class="name">{{item.name}}</view>
 							<view class="value-list">
 								<text @click="changeSpecification(index, ele)" 
-									:class="['tag', state.selectedValue[index].value.includes(ele.value) ? 'active' : '']"
+									:class="['tag', state.selectedShowValue.includes(ele.value) ? 'active' : '']"
 									 v-for="(ele, i) in item.valueList" :key="ele.id">
 								 {{ele.value}}
 								 </text>
@@ -56,13 +56,17 @@
 		typeName: [], // 可选规格名称
 		selectedName: [], // 已选规格名称
 		selectedValue: [], // 已选规格值
+		selectedShowValue: [], // 显示在页面中的值
 		unselectedName: [], // 未选规格名称
 	});
 	const initData = () => {
 		state.typeName = [];
+		state.selectedName = [];
 		state.selectedValue = [];
+		state.unselectedName = [];
 		props.info.specificationList.map(item => {
 			state.typeName.push(item.name);
+			state.unselectedName.push(item.name);
 			state.selectedValue.push({
 				name: item.name,
 				value: []
@@ -70,18 +74,42 @@
 		});
 	};
 	const changeSpecification = (index, ele) => {
-		if (!state.selectedValue[index].value.includes(ele.value)) {
-			state.selectedValue[index].value = [];
-			state.selectedValue[index].value.push(ele.value);
-			state.selectedName.push(ele.value);
-		} else {
-			state.selectedValue[index].value = [];
-		}
-		state.selectedValue.map((e, i) => {
-			if (e.value.length === 0 && !state.unselectedName.includes(e.name)) {
-				state.unselectedName.push(e.name);
+		if (state.selectedName.includes(ele.specification)) {
+			// 已选
+			if (state.selectedValue[index].value[0] === ele.value) {
+				// 删除当前值   取消选中
+				state.selectedValue[index].value = [];
+				state.selectedName.map((item, i) => {
+					if (item === ele.specification) {
+						state.selectedName.splice(i, 1);
+					}
+				});
+				// 将当前数据添加到未选
+				state.unselectedName.push(ele.specification);
+			} else {
+				// 切换选中项
+				state.selectedValue[index].value = [];
+				state.selectedValue[index].value.push(ele.value)
 			}
+		} else {
+			// 未选   选中当前
+			state.selectedName.push(ele.specification);
+			// 添加当前值
+			state.selectedValue[index].value.push(ele.value);
+			// 将当前数据从未选中删除
+			state.unselectedName.map((item, i) => {
+				if (item === ele.specification) {
+					state.unselectedName.splice(i, 1);
+				}
+			})
+		}
+		const valueArr = [];
+		state.selectedValue.map(item => {
+			item.value.map(ele => {
+				valueArr.push(ele);
+			})
 		});
+		state.selectedShowValue = valueArr;
 	};
 	const changeBuyCount = value => {
 		console.log(value)
