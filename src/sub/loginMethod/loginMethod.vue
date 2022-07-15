@@ -8,10 +8,15 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue';
-	import { onShow } from '@dcloudio/uni-app';
+	import { ref, reactive } from 'vue';
+	import { onShow, onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { getSessionIdApi, authLoginApi }  from '@/api/user';
+	
+	const state = reactive({
+		prevPath: ''
+	})
+	
 	const getUserInfo = (info) => {
 		const wxAuth = {
 			encryptedData: info.detail.encryptedData,
@@ -20,15 +25,29 @@
 		};
 		authLoginApi(wxAuth).then(res => {
 			if (res.status === SUCCESS_CODE) {
-				uni.setStorage({
-					key: "token",
-					data: res.data.token,
-					success: () => {
-						uni.reLaunch({
-							url: '../../pages/user/user?refresh=true'
-						})
-					}
-				});
+				if (state.prevPath !== '') {
+					// 跳转到登录之前访问的路径
+					uni.setStorage({
+						key: "token",
+						data: res.data.token,
+						success: () => {
+							uni.redirectTo({
+								url: state.prevPath
+							});
+						}
+					});
+				} else {
+					// 跳转到用户信息页
+					uni.setStorage({
+						key: "token",
+						data: res.data.token,
+						success: () => {
+							uni.reLaunch({
+								url: '../../pages/user/user?refresh=true'
+							})
+						}
+					});
+				}
 				uni.showToast({
 					title: '登录成功',
 					icon: 'none'
@@ -69,6 +88,15 @@
 				getSessionId();
 			}
 		})
+	});
+	onLoad(option => {
+		let params = '';
+		for(let key in option) {
+			if (key !== 'prevPath') {
+				params += key + '=' + option[key]
+			}
+		}
+		state.prevPath = option.prevPath + '?' + params;
 	})
 </script>
 

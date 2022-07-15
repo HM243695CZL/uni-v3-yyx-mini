@@ -62,7 +62,7 @@
 	};
 	const getUserInfo = refresh => {
 		getUserInfoApi({
-			refresh
+			refresh: true
 		}).then(res => {
 			if (res.status === SUCCESS_CODE) {
 				store.dispatch('setUserInfo', res.data);

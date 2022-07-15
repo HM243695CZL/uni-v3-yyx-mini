@@ -42,7 +42,7 @@
 			</view>
 		</view>
 		<ChooseSpecifition :info="state.goodsInfo" ref="chooseSpecifitionRef" />
-		<CartBar />
+		<CartBar :prev-path="state.currentPath" />
 	</view>
 </template>
 
@@ -56,8 +56,10 @@
 	import CartBar from '@/components/CartBar';
 	import ChooseSpecifition from '@/components/ChooseSpecifition';
 	
+	
 	const chooseSpecifitionRef = ref();
 	const state = reactive({
+		currentPath: '',
 		goodsId: null,
 		goodsInfo: {
 			goods: {},
@@ -105,11 +107,22 @@
 	const chooseSpecification = () => {
 		chooseSpecifitionRef.value.openPopup()
 	};
-	
+	const getCurrentPath = data => {
+		const pages = getCurrentPages();
+		const currentRoute = pages[pages.length - 1].route;
+		let params = '';
+		if (Object.keys(data)) {
+			params = Object.keys(data).reduce((prev, curr) => {
+				return prev + curr + '=' + data[curr] + '&';
+			}, '?').slice(0, -1);
+		}
+		state.currentPath = '/' + currentRoute + params;
+	};
 	onLoad(option => {
 		state.goodsId = option.id;
 		getGoodsInfo();
 		getIssueList();
+		getCurrentPath(option);
 	})
 </script>
 
