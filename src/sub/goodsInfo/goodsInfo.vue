@@ -61,6 +61,7 @@
 		goodsId: null,
 		goodsInfo: {
 			goods: {},
+			products: [],
 			specificationList: []
 		},
 		info: [],
@@ -87,6 +88,7 @@
 			if (res.status === SUCCESS_CODE) {
 				state.goodsInfo.goods = res.data.goods;
 				state.info = JSON.parse(state.goodsInfo.goods.gallery);
+				state.goodsInfo.products = res.data.products;
 				state.goodsInfo.specificationList = res.data.specificationList;
 			}
 		})

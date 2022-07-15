@@ -31,3 +31,8 @@ page{
 	line-height: 150rpx;
 	color: $uni-color-gray;
 }
+.disabled{
+	color: #c8c9cc;
+	background-color: #f2f3f5;
+	cursor: not-allowed;
+}

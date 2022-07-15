@@ -5,7 +5,7 @@
 				<view class="goods-desc flex-start">
 					<image class="img-goods" mode="aspectFill" :src="props.info.goods.picUrl"></image>
 					<view class="info">
-						<text class="price">￥99</text>
+						<text class="price">￥{{state.currentPrice}}</text>
 						<text class="tip">
 							<text v-if="state.typeName.length === state.unselectedName.length">
 								请选择 <text class="tag" v-for="item in state.typeName" :key="item">{{item}}</text>
@@ -25,7 +25,9 @@
 							<view class="name">{{item.name}}</view>
 							<view class="value-list">
 								<text @click="changeSpecification(index, ele)" 
-									:class="['tag', state.selectedShowValue.includes(ele.value) ? 'active' : '']"
+									:class="['tag', 
+									state.selectedShowValue.includes(ele.value) ? 'active' : '', 
+									state.disabledName.includes(ele.value) ? 'disabled' : '']"
 									 v-for="(ele, i) in item.valueList" :key="ele.id">
 								 {{ele.value}}
 								 </text>
@@ -58,12 +60,30 @@
 		selectedValue: [], // 已选规格值
 		selectedShowValue: [], // 显示在页面中的值
 		unselectedName: [], // 未选规格名称
+		disabledName: [], // 禁止选择的规格 数量为0时
+		currentPrice: '', // 当前选中规格的价格
 	});
 	const initData = () => {
 		state.typeName = [];
 		state.selectedName = [];
 		state.selectedValue = [];
+		state.selectedShowValue = [];
 		state.unselectedName = [];
+		state.disabledName = [];
+		let disArr = [];
+		let arr = [];
+		props.info.products.map(item => {
+			if (item.number > 0) {
+				arr = [...JSON.parse(item.specifications)]
+			} else {
+				disArr = JSON.parse(item.specifications);
+			}
+		});
+		disArr.map(item => {
+			if (!arr.includes(item)) {
+				state.disabledName.push(item);
+			}
+		});
 		props.info.specificationList.map(item => {
 			state.typeName.push(item.name);
 			state.unselectedName.push(item.name);
@@ -74,6 +94,7 @@
 		});
 	};
 	const changeSpecification = (index, ele) => {
+		if (state.disabledName.includes(ele.value)) return false;
 		if (state.selectedName.includes(ele.specification)) {
 			// 已选
 			if (state.selectedValue[index].value[0] === ele.value) {
@@ -110,6 +131,18 @@
 			})
 		});
 		state.selectedShowValue = valueArr;
+		// 设置规格价格
+		let priceIndex = null
+		props.info.products.map((item, i) => {
+			if (item.specifications === JSON.stringify(valueArr)) {
+				priceIndex = i;
+			}
+		});
+		if (priceIndex !== null) {
+			state.currentPrice = props.info.products[priceIndex].price;
+		} else {
+			state.currentPrice = '';
+		}
 	};
 	const changeBuyCount = value => {
 		console.log(value)
@@ -172,6 +205,7 @@
 							padding: $uni-padding-half;
 							background-color: $uni-color-bg;
 							margin-right: $uni-padding-half;
+							border-radius: $uni-padding-half;
 							&.active{
 								color: $uni-color-white;
 								background-color: $uni-color-base;
