@@ -2,9 +2,9 @@
 	<view class="user-container">
 		<view class="head-card flex-between">
 			<view class="left">
-				<view class="name" @click="showLoginMethod()">{{state.userInfo.id ? state.userInfo.nickname : '点击登录'}}</view>
+				<view class="name" @click="showLoginMethod()">{{userInfo.id ? userInfo.nickname : '点击登录'}}</view>
 			</view>
-			<image v-if="state.userInfo.id" class="img-avatar" mode="aspectFill" :src="state.userInfo.avatar"></image>
+			<image v-if="userInfo.id" class="img-avatar" mode="aspectFill" :src="userInfo.avatar"></image>
 		</view>
 		<view class="order-status-list flex-between">
 			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value">
@@ -21,7 +21,7 @@
 				<uni-icons class="icon" type="right" size="20"></uni-icons>
 			</view>
 		</view>
-		<view class="logout-btn" v-if="state.userInfo.id">
+		<view class="logout-btn" v-if="userInfo.id">
 			<view class="logout" @click="logout()">退出登录</view>
 		</view>
 		<view class="technical-support">
@@ -31,11 +31,12 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive, toRefs } from 'vue';
+	import { ref, reactive, toRefs, computed } from 'vue';
 	import { onLoad, onShow } from '@dcloudio/uni-app';
 	import { getUserInfoApi } from '@/api/user';
+	import { SUCCESS_CODE } from '@/utils/request';
+	import store from '@/store';
 	const state = reactive({
-		userInfo: {},
 		orderStatusList: [
 			{ value: 'all', text: '全部订单', icon: 'wallet' },
 			{ value: 'pending-pay', text: '待付款', icon: 'settings-filled' },
@@ -50,8 +51,11 @@
 			{ value: 'advise', text: '意见反馈', icon: 'info'}
 		]
 	});
+	const userInfo = computed(() => {
+		return store.state.userInfo.userInfo;
+	});
 	const showLoginMethod = () => {
-		if (state.userInfo.id) return false;
+		if (userInfo.value.id) return false;
 		uni.navigateTo({
 			url: '/sub/loginMethod/loginMethod'
 		})
@@ -60,20 +64,31 @@
 		getUserInfoApi({
 			refresh
 		}).then(res => {
-			state.userInfo = res.data;
+			if (res.status === SUCCESS_CODE) {
+				store.dispatch('setUserInfo', res.data);
+				uni.setStorage({
+					key: 'userInfo',
+					data: res.data
+				})
+			}
 		})
 	};
 	const logout = () => {
 		uni.clearStorage();
-		state.userInfo = {};
+		store.dispatch('setUserInfo',{});
 	};
 	onLoad(option => {
-		uni.getStorage({
-			key: 'token',
-			success: res => {
-				getUserInfo(option.refresh);
-			}
-		})
+		if (!userInfo.value.id) {
+			uni.getStorage({
+				key: 'token',
+				success: res => {
+					getUserInfo(option.refresh);
+				},
+				fail: err => {
+					console.log('未登录');
+				}
+			})
+		}
 	});
 </script>
 
