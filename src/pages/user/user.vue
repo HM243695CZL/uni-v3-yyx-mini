@@ -13,7 +13,10 @@
 			</view>
 		</view>
 		<view class="icon-list">
-			<view class="icon-list-item flex-between" v-for="item in state.iconList" :key="item.value">
+			<view class="icon-list-item flex-between"
+				v-for="item in state.iconList" :key="item.value"
+				@click="clickIconItem(item)"
+			 >
 				<view class="icon-list-item-left flex-start">
 					<uni-icons class="icon" :type="item.icon" size="20"></uni-icons>
 					<view class="item-text">{{item.text}}</view>
@@ -47,7 +50,7 @@
 			{ value: 'coupon', text: '我的优惠券', icon: 'vip'},
 			{ value: 'address', text: '我的地址', icon: 'location'},
 			{ value: 'paperplane', text: '我的足迹', icon: 'paperplane'},
-			{ value: 'collection', text: '我的收藏', icon: 'star'},
+			{ value: 'collection', text: '我的收藏', icon: 'star', path: '/sub/collectionList/collectionList'},
 			{ value: 'advise', text: '意见反馈', icon: 'info'}
 		]
 	});
@@ -72,6 +75,17 @@
 				})
 			}
 		})
+	};
+	const clickIconItem = data => {
+		if (!userInfo.value.id) {
+			uni.navigateTo({
+				url: '/sub/loginMethod/loginMethod'
+			});
+		} else {
+			uni.navigateTo({
+				url: data.path
+			})
+		}
 	};
 	const logout = () => {
 		uni.clearStorage();

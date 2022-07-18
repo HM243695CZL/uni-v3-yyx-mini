@@ -7,3 +7,10 @@ export const changeCollectionStatusApi = data => {
 		method: 'get'
 	})
 }
+
+export const getCollectionListApi = data => {
+	return request({
+		url: preUrl + 'getCollectionList',
+		method: 'get'
+	})
+}

@@ -96,7 +96,9 @@
 				params += key + '=' + option[key]
 			}
 		}
-		state.prevPath = option.prevPath + '?' + params;
+		if (option.prevPath) {
+			state.prevPath = option.prevPath + '?' + params;
+		}
 	})
 </script>
 

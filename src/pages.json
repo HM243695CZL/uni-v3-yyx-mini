@@ -52,6 +52,12 @@
 					"style": {
 						"navigationBarTitleText": "商品信息"
 					}
+				},
+				{
+					"path": "collectionList/collectionList",
+					"style": {
+						"navigationBarTitleText": "我的收藏"
+					}
 				}
 			]
 		}
