@@ -39,7 +39,7 @@
 					<text class="txt">购买数量</text>
 					<uni-number-box @change="changeBuyCount" />
 				</view>
-				<CartBar :is-fixed="false" />
+				<CartBar :goodsId="props.info.goodsId" :is-fixed="false" />
 			</view>
 		</uni-popup>
 	</view>

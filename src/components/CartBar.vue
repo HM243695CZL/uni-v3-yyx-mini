@@ -14,6 +14,9 @@
 
 <script setup lang="ts">
 	import { ref, reactive, computed } from 'vue';
+	import { onLoad } from '@dcloudio/uni-app';
+	import { SUCCESS_CODE } from '@/utils/request';
+	import { changeCollectionStatusApi } from '@/api/collection';
 	import store from '@/store';
 	const props = defineProps({
 		isFixed: {
@@ -23,6 +26,14 @@
 		prevPath: {
 			type: String,
 			default: ''
+		},
+		goodsId: {
+			tye: String,
+			required: true
+		},
+		collect: {
+			type: String,
+			default: '0'
 		}
 	});
 	const collectionDialog = ref();
@@ -36,7 +47,7 @@
 		options: [
 			{
 				icon: 'star',
-				text: '收藏'
+				text: '收藏',
 			}, 
 			{
 				icon: 'cart',
@@ -56,6 +67,13 @@
 			}
 		],
 	});
+	// 当前商品的收藏状态
+	if (props.collect === '1') {
+		// 已收藏
+		state.options[0].icon = 'star-filled';
+	} else {
+		state.options[0].icon = 'star';
+	}
 	const userInfo = computed(() => {
 		return store.state.userInfo.userInfo;
 	});
@@ -64,6 +82,18 @@
 			// 点击收藏
 			if (!userInfo.value.id) {
 				collectionDialog.value.open();
+			} else {
+				changeCollectionStatusApi({
+					goodsId: props.goodsId
+				}).then(res => {
+					if (res.status === SUCCESS_CODE) {
+						if (res.data === '1') {
+							state.options[0].icon = 'star-filled';
+						} else {
+							state.options[0].icon = 'star';
+						}
+					}
+				})
 			}
 		}
 	};
@@ -76,7 +106,7 @@
 	
 	const buttonClick = e => {
 		console.log(e);
-	}
+	};
 </script>
 
 

@@ -42,7 +42,7 @@
 			</view>
 		</view>
 		<ChooseSpecifition :info="state.goodsInfo" ref="chooseSpecifitionRef" />
-		<CartBar :prev-path="state.currentPath" />
+		<CartBar v-if="state.loadStatus" :collect="state.collect" :goodsId="state.goodsId" :prev-path="state.currentPath" />
 	</view>
 </template>
 
@@ -61,6 +61,7 @@
 	const state = reactive({
 		currentPath: '',
 		goodsId: null,
+		collect: '0', // 0 未收藏 1 已收藏
 		goodsInfo: {
 			goods: {},
 			products: [],
@@ -76,7 +77,8 @@
 			selectedBackgroundColor: '#fff',
 			selectedBorder: '1px #fff solid'
 		},
-		questionList: []
+		questionList: [],
+		loadStatus: false
 	});
 	
 	const change = e => {
@@ -84,14 +86,17 @@
 	}
 	
 	const getGoodsInfo = () => {
+		state.loadStatus = false;
 		getGoodsInfoApi({
 			goodsId: state.goodsId
 		}).then(res => {
+			state.loadStatus = true;
 			if (res.status === SUCCESS_CODE) {
 				state.goodsInfo.goods = res.data.goods;
 				state.info = JSON.parse(state.goodsInfo.goods.gallery);
 				state.goodsInfo.products = res.data.products;
 				state.goodsInfo.specificationList = res.data.specificationList;
+				state.collect = res.data.collect;
 			}
 		})
 	};
