@@ -1,5 +1,5 @@
 <template>
-	<UserGoodsList :dataList="state.dataList"></UserGoodsList>
+	<UserGoodsList :dataList="state.dataList" type="collection" @refresh-list="getCollectionList()"></UserGoodsList>
 </template>
 
 <script setup lang="ts">

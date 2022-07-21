@@ -14,3 +14,11 @@ export const getCollectionListApi = data => {
 		method: 'get'
 	})
 }
+
+export const emptyCollectionApi = data => {
+	return request({
+		url: preUrl + 'emptyCollection',
+		method: 'post',
+		data
+	})
+}

@@ -7,3 +7,11 @@ export const getFootprintListApi = data => {
 		method: 'get'
 	})
 }
+
+export const emptyFootprintApi = data => {
+	return request({
+		url: preUrl + 'emptyFootprint',
+		method: 'post',
+		data
+	})
+}
