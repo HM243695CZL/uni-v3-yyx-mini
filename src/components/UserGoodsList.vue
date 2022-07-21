@@ -52,6 +52,9 @@
 						color: $uni-color-9;
 						margin-bottom: $uni-padding-half;
 					}
+					.price{
+						color: $uni-color-price;
+					}
 				}
 			}
 		}

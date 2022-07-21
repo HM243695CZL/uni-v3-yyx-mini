@@ -49,7 +49,7 @@
 		iconList: [
 			{ value: 'coupon', text: '我的优惠券', icon: 'vip'},
 			{ value: 'address', text: '我的地址', icon: 'location'},
-			{ value: 'paperplane', text: '我的足迹', icon: 'paperplane'},
+			{ value: 'paperplane', text: '我的足迹', icon: 'paperplane', path: '/sub/footprintList/footprintList'},
 			{ value: 'collection', text: '我的收藏', icon: 'star', path: '/sub/collectionList/collectionList'},
 			{ value: 'advise', text: '意见反馈', icon: 'info'}
 		]
