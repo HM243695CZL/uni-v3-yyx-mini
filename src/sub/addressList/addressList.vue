@@ -7,13 +7,32 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue';
+	import { ref, reactive } from 'vue';
+	import {onLoad} from '@dcloudio/uni-app';
+	import {getAddressListApi} from '@/api/address';
+	import { SUCCESS_CODE } from '@/utils/request';
+	
+	const state = reactive({
+		dataList: []
+	})
 	
 	const showEditAddress = () => {
 		uni.navigateTo({
 			url: '/sub/addressEdit/addressEdit'
 		});
-	}
+	};
+	
+	const getAddressList = () => {
+		getAddressListApi().then(res => {
+			if (res.status === SUCCESS_CODE) {
+				state.dataList = res.data.list;
+			}
+		})
+	};
+	
+	onLoad(() => {
+		getAddressList();
+	})
 </script>
 
 <style lang="scss">

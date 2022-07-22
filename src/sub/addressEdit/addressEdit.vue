@@ -1,7 +1,7 @@
 <template>
 	<view class="address-edit-container">
 		<view class="form w100">
-			<uni-forms ref="form" :rules="state.rules" :modelValue="state.form" labelWidth="80px">
+			<uni-forms ref="formRef" :rules="state.rules" :modelValue="state.form" labelWidth="80px">
 				<uni-forms-item label="姓名" required name="name">
 					<uni-easyinput v-model="state.form.name" placeholder="请输入姓名" />
 				</uni-forms-item>
@@ -41,6 +41,8 @@
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import { areaTree } from '@/utils/areaTree';
+	import { saveAddressApi } from '@/api/address';
+	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const formRef = ref();
 	const state = reactive({
@@ -95,7 +97,14 @@
 	const clickConfirm = () => {
 		formRef.value.validate(valid => {
 			if (valid === null) {
-				console.log(state.form);
+				saveAddressApi(state.form).then(res => {
+					if (res.status === SUCCESS_CODE) {
+						uni.showToast({
+							icon: 'success'
+						});
+						clickCancel();
+					}
+				})
 			}
 		})
 	}
