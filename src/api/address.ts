@@ -15,3 +15,11 @@ export const getAddressListApi = () => {
 		method: 'get'
 	})
 }
+
+export const emptyAddressApi = data => {
+	return request({
+		url: preUrl + 'emptyAddress',
+		method: 'post',
+		data
+	})
+}

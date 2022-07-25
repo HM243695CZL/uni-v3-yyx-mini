@@ -10,7 +10,7 @@
 					<view class="brief text-over">{{item.brief}}</view>
 					<view class="price flex-between">
 						￥{{item.retailPrice}}
-						<uni-icons class="icon" @click="clickEmpty(item)" color="#ff6146" type="closeempty" size="20"></uni-icons>
+						<uni-icons class="icon" @click="clickEmpty(item)" color="#36c1ba" type="closeempty" size="20"></uni-icons>
 					</view>
 				</view>
 			</view>
