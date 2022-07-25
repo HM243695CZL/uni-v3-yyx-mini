@@ -10,6 +10,7 @@
 		<view class="goods-list">
 			<GoodsList :goods="state.goodsList" />
 		</view>
+		<SearchIcon />
 	</view>
 </template>
 
@@ -19,6 +20,8 @@
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { getSecondCategoryApi, getGoodsByCategoryIdApi } from '@/api/category';
 	import GoodsList from '@/components/GoodsList';
+	import SearchIcon from '@/components/SearchIcon';
+	
 	const state = reactive({
 		categoryList: [],
 		pageIndex: 1,

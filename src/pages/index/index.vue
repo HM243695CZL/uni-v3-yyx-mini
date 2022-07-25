@@ -10,6 +10,7 @@
 	<view class="goods-box">
 		<GoodsList :goods="state.dataList" />
 	</view>
+	<SearchIcon />
   </view>
 </template>
 
@@ -19,6 +20,7 @@
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { getHomeGoodsApi } from '@/api/goods';
 	import GoodsList from '@/components/GoodsList';
+	import SearchIcon from '@/components/SearchIcon';
 	
 	const state = reactive({
 		tabBarList: ['默认', '最新', '价格'],

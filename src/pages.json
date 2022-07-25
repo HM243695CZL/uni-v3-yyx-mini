@@ -76,6 +76,12 @@
 					"style": {
 						"navigationBarTitleText": "编辑地址"
 					}
+				},
+				{
+					"path": "searchHistory/searchHistory",
+					"style": {
+						"navigationBarTitleText": "搜索历史"
+					}
 				}
 			]
 		}
