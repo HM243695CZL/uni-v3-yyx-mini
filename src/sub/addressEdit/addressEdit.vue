@@ -40,8 +40,9 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import { areaTree } from '@/utils/areaTree';
+	import { onLoad } from '@dcloudio/uni-app';
 	import { saveAddressApi } from '@/api/address';
+	import { getRegionListApi} from '@/api/region';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const formRef = ref();
@@ -77,7 +78,7 @@
 			{ text: '是', value: 1},
 			{ text: '否', value: 0}
 		],
-		areaTree,
+		areaTree: [],
 		map: {
 			text: 'value',
 			value: 'value'
@@ -107,7 +108,28 @@
 				})
 			}
 		})
-	}
+	};
+	
+	const getRegionList = () => {
+		getRegionListApi().then(res => {
+			if (res.status === SUCCESS_CODE) {
+				state.areaTree = res.data;
+				uni.setStorage({
+					key : 'regionList',
+					data: res.data
+				});
+			}
+		})
+	};
+	
+	onLoad(() => {
+		const regionList = uni.getStorageSync('regionList');
+		if (regionList === '') {
+			getRegionList();
+		} else {
+			state.areaTree = regionList;
+		}
+	})
 </script>
 
 <style lang="scss">
