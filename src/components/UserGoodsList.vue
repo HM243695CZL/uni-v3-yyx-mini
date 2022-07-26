@@ -1,7 +1,7 @@
 <template>
 	<view class="user-goods-list-container">
 		<view class="list" v-if="props.dataList.length > 0">
-			<view class="list-item flex-start" v-for="item in props.dataList" :key="item.id">
+			<view class="list-item flex-start" v-for="item in props.dataList" :key="item.id" @click="showGoodsInfo(item.valueId)">
 				<view class="img-goods">
 					<image class="img" mode="aspectFill" :src="item.picUrl"></image>
 				</view>
@@ -10,15 +10,15 @@
 					<view class="brief text-over">{{item.brief}}</view>
 					<view class="price flex-between">
 						￥{{item.retailPrice}}
-						<uni-icons class="icon" @click="clickEmpty(item)" color="#36c1ba" type="closeempty" size="20"></uni-icons>
+						<uni-icons v-if="props.type !== 'search'" class="icon" @click="clickEmpty(item)" color="#36c1ba" type="closeempty" size="20"></uni-icons>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="btn-box" v-if="props.dataList.length > 0" @click="emptyAll()">
+		<view class="btn-box" v-if="props.dataList.length > 0 && props.type !== 'search'" @click="emptyAll()">
 			<view class="btn">清空全部</view>
 		</view>
-		<view class="no-data" v-else>暂无数据</view>
+		<view class="no-data" v-if="props.dataList.length === 0 && props.type !== 'search'">暂无数据</view>
 	</view>
 </template>
 
@@ -45,6 +45,12 @@
 	const state = reactive({
 		
 	});
+	
+	const showGoodsInfo = id => {
+		uni.navigateTo({
+			url: '/sub/goodsInfo/goodsInfo?id=' + id
+		})
+	};
 	
 	const emptyFootprint = () => {
 		emptyFootprintApi(state.selectedIds).then(res => {
@@ -101,6 +107,7 @@
 				margin-bottom: $uni-padding-half;
 				padding: $uni-padding;
 				background-color: $uni-color-white;
+				border-bottom: 1px solid $uni-color-bd;
 				.img-goods{
 					.img{
 						width: 150rpx;

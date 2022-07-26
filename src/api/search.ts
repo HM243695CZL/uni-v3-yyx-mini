@@ -24,3 +24,17 @@ export const getSearchGoodsListApi = data => {
 		data
 	})
 }
+
+export const getRecommendAndHotKeywordApi = () => {
+	return request({
+		url: preUrl + 'getRecommendAndHotKeyword',
+		method: 'get'
+	})
+}
+
+export const emptySearchHistoryApi = () => {
+	return request({
+		url: preUrl + 'emptySearchHistory',
+		method: 'get'
+	})
+}
