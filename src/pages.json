@@ -82,6 +82,12 @@
 					"style": {
 						"navigationBarTitleText": "搜索商品"
 					}
+				},
+				{
+					"path": "advise/advise",
+					"style": {
+						"navigationBarTitleText": "意见反馈"
+					}
 				}
 			]
 		}
