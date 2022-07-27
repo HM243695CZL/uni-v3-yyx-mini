@@ -24,6 +24,7 @@
 						:imageStyles="state.imageStyle" 
 						file-mediatype="image"
 						file-extname="png,jpg"
+						@select="selectImg" 
 					></uni-file-picker>
 				</uni-forms-item>
 				<uni-forms-item label="手机号码" name="mobile">
@@ -37,6 +38,8 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
+	import {policyApi} from '@/api/oss';
+	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
 		form: {
@@ -51,7 +54,15 @@
 		imageStyle: {
 			width: 100,
 			height: 100
-		}
+		},
+		dataObj: {
+			policy: '',
+			signature: '',
+			key: '',
+			ossAccessKeyId: '',
+			dir: '',
+			host: ''
+		},
 	});
 	
 	const changeFeedType = e => {
@@ -59,8 +70,35 @@
 	};
 	
 	const confirm = () => {
+		state.form.hasPicture = state.form.picUrls.length > 0;
 		console.log(state.form);
 	};
+	
+	const selectImg = e => {
+		let fileList = e.tempFiles;
+		policyApi().then(res => {
+			if (res.status === SUCCESS_CODE) {
+				const {accessKeyId, dir, host, policy, signature} = res.data;
+				state.dataObj.policy = policy;
+				state.dataObj.signature = signature;
+				state.dataObj.key = dir + '/${filename}';
+				state.dataObj.ossAccessKeyId = accessKeyId;
+				state.dataObj.dir = dir;
+				state.dataObj.host = host;
+				
+				uni.uploadFile({
+					url: host,
+					filePath: fileList[0].path,
+					name: 'file',
+					fileType: 'image',
+					formData: state.dataObj,
+					success: result => {
+						state.form.picUrls.push(state.dataObj.host + '/' + state.dataObj.dir + '/' + fileList[0].name)
+					}
+				})
+			}
+		})
+	}
 </script>
 
 <style lang="scss">
