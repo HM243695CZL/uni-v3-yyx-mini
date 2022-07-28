@@ -1,7 +1,7 @@
 <template>
 	<view class="advice-container">
 		<view class="form w100">
-			<uni-forms ref="form" :rules="state.rules" :modelValue="state.form" labelWidth="80px">
+			<uni-forms ref="formRef" :rules="state.rules" :modelValue="state.form" labelWidth="80px">
 				<uni-forms-item label="反馈类型" required name="feedType">
 					<picker mode="selector" :range="state.feedTypeList" @change="changeFeedType">
 						<view class="feed-value flex-between">
@@ -27,7 +27,7 @@
 						@select="selectImg" 
 					></uni-file-picker>
 				</uni-forms-item>
-				<uni-forms-item label="手机号码" name="mobile">
+				<uni-forms-item label="手机号码" required name="mobile">
 					<uni-easyinput v-model="state.form.mobile" placeholder="方便我们与您联系" />
 				</uni-forms-item>
 			</uni-forms>
@@ -39,8 +39,10 @@
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import {policyApi} from '@/api/oss';
+	import {saveFeedbackApi} from '@/api/feedback';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
+	const formRef = ref();
 	const state = reactive({
 		form: {
 			feedType: '',
@@ -49,7 +51,23 @@
 			picUrls: [],
 			mobile: '',
 		},
-		rules: {},
+		rules: {
+			feedType: {
+				rules: [
+					{ required: true, errorMessage: '请选择反馈类型'}
+				]
+			},
+			content: {
+				rules: [
+					{ required: true, errorMessage: '请输入反馈内容'}
+				]
+			},
+			mobile: {
+				rules: [
+					{ required: true, errorMessage: '手机号不能为空'}
+				]
+			}
+		},
 		feedTypeList: ['商品相关', '功能异常', '优化建议', '其他'],
 		imageStyle: {
 			width: 100,
@@ -70,8 +88,20 @@
 	};
 	
 	const confirm = () => {
-		state.form.hasPicture = state.form.picUrls.length > 0;
-		console.log(state.form);
+		formRef.value.validate(valid => {
+			if (valid === null) {
+				state.form.hasPicture = state.form.picUrls.length > 0;
+				state.form.picUrls = JSON.stringify(state.form.picUrls);
+				saveFeedbackApi(state.form).then(res => {
+					if (res.status === SUCCESS_CODE) {
+						uni.showToast({
+							icon: 'success'
+						});
+						uni.navigateBack();
+					}
+				})
+			}
+		})
 	};
 	
 	const selectImg = e => {
@@ -85,17 +115,18 @@
 				state.dataObj.ossAccessKeyId = accessKeyId;
 				state.dataObj.dir = dir;
 				state.dataObj.host = host;
-				
-				uni.uploadFile({
-					url: host,
-					filePath: fileList[0].path,
-					name: 'file',
-					fileType: 'image',
-					formData: state.dataObj,
-					success: result => {
-						state.form.picUrls.push(state.dataObj.host + '/' + state.dataObj.dir + '/' + fileList[0].name)
-					}
-				})
+				for (let i = 0; i < fileList.length; i++) {
+					uni.uploadFile({
+						url: host,
+						filePath: fileList[i].path,
+						name: 'file',
+						fileType: 'image',
+						formData: state.dataObj,
+						success: result => {
+							state.form.picUrls.push(state.dataObj.host + '/' + state.dataObj.dir + '/' + fileList[i].name)
+						}
+					})
+				}
 			}
 		})
 	}
