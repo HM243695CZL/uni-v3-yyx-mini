@@ -42,7 +42,12 @@
 			</view>
 		</view>
 		<ChooseSpecifition :info="state.goodsInfo" ref="chooseSpecifitionRef" />
-		<CartBar v-if="state.loadStatus" :collect="state.collect" :goodsId="state.goodsId" :prev-path="state.currentPath" />
+		<CartBar v-if="state.loadStatus" 
+			:collect="state.collect" 
+			:goodsId="state.goodsId"
+			 :prev-path="state.currentPath" 
+			 @show-choose-spec="chooseSpecification()"
+		 />
 	</view>
 </template>
 

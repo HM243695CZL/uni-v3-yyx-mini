@@ -1,9 +1,14 @@
-export const baseUrl = 'http://192.168.1.15:9090/wx/';
+export const baseUrl = 'http://192.168.0.101:9090/wx/';
 export const SUCCESS_CODE = 200;
-export const request = ({ url, method, data }, showLoading: boolean = true) => {
+interface RequestObj {
+	url: string;
+	method: string;
+	data: any;
+}
+export const request = ({url, method, data}: RequestObj, showLoading: boolean = true) => {
 	let token = "Bearer ";
 	token += uni.getStorageSync('token');
-	let httpDefaultOpts = {
+	let httpDefaultOpts: any = {
 		url: baseUrl + url,
 		data: data,
 		method: method,
@@ -20,7 +25,9 @@ export const request = ({ url, method, data }, showLoading: boolean = true) => {
 	}
 	let promise = new Promise(function(resolve, reject) {
 		if (showLoading) {
-			uni.showLoading();
+			uni.showLoading({
+				title: ''
+			});
 		}
 		uni.request(httpDefaultOpts).then(res => {
 			if (showLoading) {
@@ -44,11 +51,11 @@ export const request = ({ url, method, data }, showLoading: boolean = true) => {
 	return promise
 };
 
-export const tokenRequest = ({ url, method, data }) => {
+export const tokenRequest = ({ url, method, data }: RequestObj) => {
 	let token = "Bearer ";
 	token += uni.getStorageSync('token');
 	//此token是登录成功后后台返回保存在storage中的
-	let httpDefaultOpts = {
+	let httpDefaultOpts: any = {
 		url: baseUrl + url,
 		data: data,
 		method: method,
@@ -58,7 +65,9 @@ export const tokenRequest = ({ url, method, data }) => {
 		dataType: 'json',
 	}
 	let promise = new Promise(function(resolve, reject) {
-		uni.showLoading();
+		uni.showLoading({
+			title: ''
+		});
 		uni.request(httpDefaultOpts).then(res => {
 			uni.hideLoading();
 			if (res.data.status === SUCCESS_CODE) {

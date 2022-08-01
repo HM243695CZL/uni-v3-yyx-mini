@@ -39,7 +39,10 @@
 					<text class="txt">购买数量</text>
 					<uni-number-box @change="changeBuyCount" />
 				</view>
-				<CartBar :goodsId="props.info.goodsId" :is-fixed="false" />
+				<CartBar :goodsId="props.info.goods.id" :is-fixed="false"
+					:buy-count="state.buyCount"
+					:product-id="state.productId"
+				 />
 			</view>
 		</uni-popup>
 	</view>
@@ -62,6 +65,8 @@
 		unselectedName: [], // 未选规格名称
 		disabledName: [], // 禁止选择的规格 数量为0时
 		currentPrice: '', // 当前选中规格的价格
+		buyCount: 1, // 购买数量
+		productId: '', // 选中的规格id
 	});
 	const initData = () => {
 		state.typeName = [];
@@ -136,6 +141,7 @@
 		props.info.products.map((item, i) => {
 			if (item.specifications === JSON.stringify(valueArr)) {
 				priceIndex = i;
+				state.productId = item.id;
 			}
 		});
 		if (priceIndex !== null) {
@@ -145,7 +151,7 @@
 		}
 	};
 	const changeBuyCount = value => {
-		console.log(value)
+		state.buyCount = value;
 	};
 	const popupRef = ref();
 	const openPopup = () => {

@@ -17,6 +17,7 @@
 	import { onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { changeCollectionStatusApi } from '@/api/collection';
+	import { saveCartApi } from '@/api/cart';
 	import store from '@/store';
 	const props = defineProps({
 		isFixed: {
@@ -34,8 +35,15 @@
 		collect: {
 			type: String,
 			default: '0'
+		},
+		buyCount: {
+			type: Number
+		},
+		productId: {
+			type: String
 		}
 	});
+	const emit = defineEmits('show-choose-spec');
 	const collectionDialog = ref();
 	const state = reactive({
 		cartStyle: {
@@ -105,7 +113,17 @@
 	};
 	
 	const buttonClick = e => {
-		console.log(e);
+		if (props.isFixed) {
+			emit('show-choose-spec');
+			return false;
+		}
+		saveCartApi({
+			productId: props.productId,
+			number: props.buyCount,
+			goodsId: props.goodsId
+		}).then(res => {
+			console.log(res);
+		})
 	};
 </script>
 
