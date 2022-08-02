@@ -1,19 +1,28 @@
 <template>
 	<view class="user-goods-list-container">
 		<view class="list" v-if="props.dataList.length > 0">
-			<view class="list-item flex-start" v-for="item in props.dataList" :key="item.id" @click="showGoodsInfo(item.valueId)">
-				<view class="img-goods">
-					<image class="img" mode="aspectFill" :src="item.picUrl"></image>
-				</view>
-				<view class="desc text-over">
-					<view class="name text-over">{{item.name}}</view>
-					<view class="brief text-over">{{item.brief}}</view>
-					<view class="price flex-between">
-						￥{{item.retailPrice}}
-						<uni-icons v-if="props.type !== 'search'" class="icon" @click="clickEmpty(item)" color="#36c1ba" type="closeempty" size="20"></uni-icons>
+			<uni-swipe-action>
+				<uni-swipe-action-item
+					:right-options="state.swipeOption"
+					:show="state.isOpened"
+					:auto-close="false"
+					@click="clickEmpty($event, item.id)"
+					v-for="item in props.dataList" :key="item.id" 
+				>
+					<view class="list-item flex-start" @click="showGoodsInfo(item.valueId)">
+						<view class="img-goods">
+							<image class="img" mode="aspectFill" :src="item.picUrl"></image>
+						</view>
+						<view class="desc text-over">
+							<view class="name text-over">{{item.name}}</view>
+							<view class="brief text-over">{{item.brief}}</view>
+							<view class="price flex-between">
+								￥{{item.retailPrice}}
+							</view>
+						</view>
 					</view>
-				</view>
-			</view>
+				</uni-swipe-action-item>
+			</uni-swipe-action>
 		</view>
 		<view class="btn-box" v-if="props.dataList.length > 0 && props.type !== 'search'" @click="emptyAll()">
 			<view class="btn">清空全部</view>
@@ -43,7 +52,21 @@
 	const emit = defineEmits('refresh-list')
 	
 	const state = reactive({
-		
+		isOpened: 'none',
+		swipeOption: [
+			{
+				text: '取消',
+				style: {
+					backgroundColor: '#ff6146'
+				}
+			}, 
+			{
+				text: '删除',
+				style: {
+					backgroundColor: '#36c1ba'
+				}
+			}
+		]
 	});
 	
 	const showGoodsInfo = id => {
@@ -74,9 +97,11 @@
 		})
 	};
 	
-	const clickEmpty = data => {
-		state.selectedIds = [data.id];
-		operateFun();
+	const clickEmpty = (data, id) => {
+		if (data.index === 1) {
+			state.selectedIds = [id];
+			operateFun();
+		}
 	};
 	
 	const emptyAll = () => {
