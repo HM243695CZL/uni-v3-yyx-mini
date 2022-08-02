@@ -122,7 +122,12 @@
 			number: props.buyCount,
 			goodsId: props.goodsId
 		}).then(res => {
-			console.log(res);
+			if (res.status === SUCCESS_CODE) {
+				uni.showToast({
+					title: '添加成功',
+					icon: 'success'
+				});
+			}
 		})
 	};
 </script>

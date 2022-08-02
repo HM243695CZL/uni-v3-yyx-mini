@@ -4,7 +4,14 @@ const preUrl = 'cart/';
 export const saveCartApi = (data: any) => {
 	return request({
 		url: preUrl + 'create',
-		method: 'post',
+		method: 'POST',
 		data
+	})
+}
+
+export const getCartInfoApi = () => {
+	return request({
+		url: preUrl + 'getCartInfo',
+		method: 'POST'
 	})
 }
