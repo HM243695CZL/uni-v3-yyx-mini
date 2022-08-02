@@ -17,6 +17,11 @@ page{
 	justify-content: center;
 	align-items: center;
 }
+.flex-end{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
 .text-over{
   overflow: hidden;
   white-space: nowrap;

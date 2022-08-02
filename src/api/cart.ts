@@ -15,3 +15,11 @@ export const getCartInfoApi = () => {
 		method: 'POST'
 	})
 }
+
+export const changeCheckedApi = (data: any) => {
+	return request({
+		url: preUrl + 'checked',
+		method: 'POST',
+		data
+	})
+}

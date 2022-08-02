@@ -3,7 +3,9 @@
 		<view class="goods-list">
 			<view class="list-item" v-for="item in state.cartList" :key="item.id">
 				<view class="item-box flex-between">
-					<checkbox class="check-box" :value="item.id" :checked="item.checked" color="#36c1ba" />
+					<checkbox-group  @change="changeCheck($event, item.productId)">
+						<checkbox :value="item.productId" :checked="item.checked" color="#36c1ba" />
+					</checkbox-group>
 					<view class="img-pic">
 						<image class="img" mode="aspectFit" :src="item.picUrl"></image>
 					</view>
@@ -23,33 +25,76 @@
 				</view>
 			</view>
 		</view>
+		<view class="check-all flex-between">
+			<checkbox-group @change="changeCheck($event, 'all')">
+				<label>
+					<checkbox class="check-box" value="all" 
+						:checked="state.checkIds.length === state.cartList.length"
+						color="#36c1ba" />
+					全选
+				</label>
+			</checkbox-group>
+			<view class="all-price flex-end">
+				总计<text class="settle-price">￥{{state.allPrice}}</text>
+				<view class="settlement">结算</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import {onLoad, onHide} from '@dcloudio/uni-app';
-	import {getCartInfoApi} from '@/api/cart';
+	import {getCartInfoApi, changeCheckedApi} from '@/api/cart';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
 		cartList: [],
-		checkIds: []
-	})
+		checkIds: [],
+		allPrice: 0,
+		cartTotal: {}
+	});
 	
 	const getCartInfo = () => {
 		getCartInfoApi().then(res => {
 			if (res.status === SUCCESS_CODE) {
-				state.cartList = res.data;
+				initData(res.data);
 			}
 		})
-	}
+	};
+	
+	const changeCheck = (e, id) => {
+		const isChecked = e.detail.value.length > 0;
+		let productIds = [];
+		if (id === 'all') {
+			state.cartList.map(item => {
+				productIds.push(item.productId)
+			})
+		} else {
+			productIds = [id];
+		}
+		changeCheckedApi({
+			isChecked,
+			productIds
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				initData(res.data);
+			}
+		})
+	};
+	
+	const initData = data => {
+		state.cartList = data.cartList;
+		state.cartTotal = data.cartTotal;
+		state.allPrice = data.cartTotal.checkedGoodsAmount;
+		state.checkIds = [];
+		data.cartList.map(item => {
+			if (item.checked) {
+				state.checkIds.push(item.productId);
+			}
+		})
+	};
 	
 	getCartInfo();
-	
-	onHide(() => {
-		console.log('隐藏');
-	})
 </script>
 
 
@@ -58,6 +103,8 @@
 		background-color: $uni-color-bg;
 		height: 100%;
 		.goods-list{
+			height: calc(100% - 120rpx);
+			overflow: auto;
 			.list-item{
 				padding: $uni-padding;
 				margin-bottom: $uni-padding-half;
@@ -100,6 +147,26 @@
 					color: $uni-color-9;
 					margin-top: $uni-padding-half;
 					text-align: right;
+				}
+			}
+		}
+		.check-all{
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: $uni-padding;
+			background-color: $uni-color-white;
+			.all-price{
+				.settle-price{
+					color: $uni-color-price;
+				}
+				.settlement{
+					margin-left: $uni-padding-half;
+					padding: 8rpx 20rpx;
+					background: $uni-color-base;
+					color: $uni-color-white;
+					border-radius: 10rpx;
 				}
 			}
 		}
