@@ -6,7 +6,8 @@ import { Module } from 'vuex';
 const userInfo = {
 	namespace: true,
 	state: {
-		userInfo: uni.getStorageSync('userInfo')
+		userInfo: uni.getStorageSync('userInfo'),
+		cartCount: uni.getStorageSync('cartCount')
 	},
 	mutations: {
 		SET_USER_INFO(state, data) {

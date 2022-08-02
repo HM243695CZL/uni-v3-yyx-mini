@@ -60,6 +60,7 @@
 			{
 				icon: 'cart',
 				text: '购物车',
+				info: 2
 			},
 		],
 		buttonGroup: [
