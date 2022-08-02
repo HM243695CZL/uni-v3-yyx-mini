@@ -12,11 +12,17 @@ const userInfo = {
 	mutations: {
 		SET_USER_INFO(state, data) {
 			state.userInfo = data;
+		},
+		SET_CART_COUNT(state, data) {
+			state.cartCount = data;
 		}
 	},
 	actions: {
 		setUserInfo({commit}, data) {
 			commit("SET_USER_INFO", data);
+		},
+		setCartCount({commit}, data) {
+			commit("SET_CART_COUNT", data);
 		}
 	}
 };

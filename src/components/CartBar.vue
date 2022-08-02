@@ -59,8 +59,7 @@
 			}, 
 			{
 				icon: 'cart',
-				text: '购物车',
-				info: 2
+				text: '购物车'
 			},
 		],
 		buttonGroup: [
@@ -85,6 +84,9 @@
 	}
 	const userInfo = computed(() => {
 		return store.state.userInfo.userInfo;
+	});
+	const cartCount = computed(() => {
+		return store.state.userInfo.cartCount;
 	});
 	const onClick = e => {
 		if (e.index === 0) {
@@ -124,6 +126,8 @@
 			goodsId: props.goodsId
 		}).then(res => {
 			if (res.status === SUCCESS_CODE) {
+				store.dispatch('setCartCount', res.data);
+				uni.setStorageSync('cartCount', res.data);
 				uni.showToast({
 					title: '添加成功',
 					icon: 'success'
@@ -131,6 +135,7 @@
 			}
 		})
 	};
+	state.options[1].info = cartCount;
 </script>
 
 

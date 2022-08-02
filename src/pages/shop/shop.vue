@@ -60,9 +60,11 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive } from 'vue';
+	import { ref, reactive, computed } from 'vue';
+	import { onShow } from '@dcloudio/uni-app';
 	import {getCartInfoApi, changeCheckedApi, emptyCartApi} from '@/api/cart';
 	import { SUCCESS_CODE } from '@/utils/request';
+	import store from '@/store';
 	
 	const state = reactive({
 		cartList: [],
@@ -90,6 +92,8 @@
 	const getCartInfo = () => {
 		getCartInfoApi().then(res => {
 			if (res.status === SUCCESS_CODE) {
+				store.dispatch('setCartCount', res.data.cartTotal.goodsCount);
+				uni.setStorageSync('cartCount', res.data.cartTotal.goodsCount);
 				initData(res.data);
 			}
 		})
@@ -151,7 +155,10 @@
 		})
 	};
 	
-	getCartInfo();
+	onShow(() => {
+		getCartInfo();
+	});
+	
 </script>
 
 
