@@ -1,35 +1,52 @@
 <template>
 	<view class="shop-container">
 		<view class="goods-list">
-			<view class="list-item" v-for="item in state.cartList" :key="item.id">
-				<view class="item-box flex-between">
-					<checkbox-group  @change="changeCheck($event, item.productId)">
-						<checkbox :value="item.productId" :checked="item.checked" color="#36c1ba" />
-					</checkbox-group>
-					<view class="img-pic">
-						<image class="img" mode="aspectFit" :src="item.picUrl"></image>
-					</view>
-					<view class="info text-over">
-						<view class="name text-over">{{item.goodsName}}</view>
-						<view class="tag-list flex-start" v-for="ele in JSON.parse(item.specifications)" :key="ele">
-							<view class="tag">{{ele}}</view>
+			<view class="list-box"  v-if="state.cartList.length > 0">
+				<uni-swipe-action>
+					<uni-swipe-action-item
+						:right-options="state.swipeOption"
+						:show="state.isOpened"
+						:auto-close="false"
+						@click="clickSwiper($event, item.id)"
+						v-for="item in state.cartList" :key="item.id"
+					>
+						<view class="list-item">
+							<view class="item-box flex-between">
+								<checkbox-group  @change="changeCheck($event, item.productId)">
+									<checkbox :value="item.productId" :checked="item.checked" color="#36c1ba" />
+								</checkbox-group>
+								<view class="img-pic">
+									<image class="img" mode="aspectFit" :src="item.picUrl"></image>
+								</view>
+								<view class="info text-over">
+									<view class="name text-over">{{item.goodsName}}</view>
+									<view class="tag-list flex-start" v-for="ele in JSON.parse(item.specifications)" :key="ele">
+										<view class="tag">{{ele}}</view>
+									</view>
+									<view class="price-box flex-between">
+										<view class="price">￥{{item.price}}</view>
+										<view class="count">x{{item.number}}</view>
+									</view>
+								</view>
+							</view>
+							<view class="create-time">
+								添加日期：{{item.addTime}}
+							</view>
 						</view>
-						<view class="price-box flex-between">
-							<view class="price">￥{{item.price}}</view>
-							<view class="count">x{{item.number}}</view>
-						</view>
-					</view>
-				</view>
-				<view class="create-time">
-					添加日期：{{item.addTime}}
-				</view>
+					</uni-swipe-action-item>
+				</uni-swipe-action>
 			</view>
+			<view class="btn-box" v-if="state.cartList.length > 0" @click="emptyAll()">
+				<view class="btn">清空全部</view>
+			</view>
+			<view class="no-data" v-if="state.cartList.length === 0">暂无数据</view>
 		</view>
 		<view class="check-all flex-between">
 			<checkbox-group @change="changeCheck($event, 'all')">
 				<label>
 					<checkbox class="check-box" value="all" 
-						:checked="state.checkIds.length === state.cartList.length"
+						:disabled="state.checkIds.length === 0"
+						:checked="state.checkIds.length === state.cartList.length && state.checkIds.length !== 0"
 						color="#36c1ba" />
 					全选
 				</label>
@@ -44,14 +61,30 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import {getCartInfoApi, changeCheckedApi} from '@/api/cart';
+	import {getCartInfoApi, changeCheckedApi, emptyCartApi} from '@/api/cart';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
 		cartList: [],
 		checkIds: [],
 		allPrice: 0,
-		cartTotal: {}
+		cartTotal: {},
+		isOpened: 'none',
+		selectedIds: [],
+		swipeOption: [
+			{
+				text: '取消',
+				style: {
+					backgroundColor: '#ff6146'
+				}
+			}, 
+			{
+				text: '删除',
+				style: {
+					backgroundColor: '#36c1ba'
+				}
+			}
+		]
 	});
 	
 	const getCartInfo = () => {
@@ -90,6 +123,30 @@
 		data.cartList.map(item => {
 			if (item.checked) {
 				state.checkIds.push(item.productId);
+			}
+		})
+	};
+	
+	const clickSwiper = (data, id) => {
+		if (data.index === 1) {
+			state.selectedIds = [id];
+			emptyCart();
+		}
+	};
+	
+	const emptyAll = () => {
+		const arr = [];
+		state.cartList.map(item => {
+			arr.push(item.id);
+		});
+		state.selectedIds = arr;
+		emptyCart();
+	};
+	
+	const emptyCart = () => {
+		emptyCartApi(state.selectedIds).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				getCartInfo();
 			}
 		})
 	};
@@ -147,6 +204,17 @@
 					color: $uni-color-9;
 					margin-top: $uni-padding-half;
 					text-align: right;
+				}
+			}
+			.btn-box{
+				margin-top: $uni-padding;
+				padding: $uni-padding;
+				.btn{
+					border-radius: 10rpx;
+					padding: $uni-padding 0;
+					text-align: center;
+					background-color: $uni-color-base;
+					color: $uni-color-white;
 				}
 			}
 		}

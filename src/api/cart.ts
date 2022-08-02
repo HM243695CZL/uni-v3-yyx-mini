@@ -23,3 +23,11 @@ export const changeCheckedApi = (data: any) => {
 		data
 	})
 }
+
+export const emptyCartApi = (data: any) => {
+	return request({
+		url: preUrl + 'emptyCart',
+		method: 'POST',
+		data
+	})
+}
