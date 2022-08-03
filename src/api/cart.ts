@@ -39,3 +39,11 @@ export const fastAddApi = (data: any) => {
 		data
 	})
 }
+
+export const getShoppingOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'shoppingOrder',
+		method: 'POST',
+		data
+	})
+}

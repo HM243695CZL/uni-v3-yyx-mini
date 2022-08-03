@@ -2,9 +2,12 @@
 	<view class="address-list-container">
 		<view class="address-card" v-if="state.dataList.length > 0">
 			<view class="card-item" v-for="item in state.dataList" :key="item.id">
-				<view class="head flex-start">
-					<view class="name text-over">{{item.name}}</view>
-					<view class="tel">{{item.tel}}</view>
+				<view class="head flex-between">
+					<view class="flex-start">
+						<view class="name text-over">{{item.name}}</view>
+						<view class="tel">{{item.tel}}</view>
+					</view>
+					<view v-if="item.isDefault" class="is-default">默认</view>
 				</view>
 				<view class="address-info">
 					<text class="county">
@@ -14,7 +17,6 @@
 						{{item.addressDetail}}
 					</text>
 				</view>
-				<uni-icons class="icon" @click="clickEmpty(item)" color="#36c1ba" type="closeempty" size="20"></uni-icons>
 			</view>
 		</view>
 		<view class="no-data" v-if="state.dataList.length <= 0">暂无数据</view>
@@ -86,16 +88,19 @@
 		height: 100%;
 		padding: $uni-padding;
 		.address-card{
-			position: relative;
 			margin-bottom: $uni-padding;
 			.card-item{
 				padding: $uni-padding;
 				border-radius: $uni-padding-half;
 				background: $uni-color-white;
+				margin-bottom: $uni-padding-half;
 				.head{
 					.tel{
 						margin-left: $uni-padding;
 						width: 200rpx;
+					}
+					.is-default{
+						color: $uni-color-base;
 					}
 				}
 				.address-info{
@@ -104,11 +109,6 @@
 						margin-left: $uni-padding;
 					}
 				}
-			}
-			.icon{
-				position: absolute;
-				right: $uni-padding-half;
-				bottom: $uni-padding-half;
 			}
 		}
 		.btn-box{

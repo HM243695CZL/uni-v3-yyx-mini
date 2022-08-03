@@ -12,7 +12,7 @@
 					>
 						<view class="list-item">
 							<view class="item-box flex-between">
-								<checkbox-group  @change="changeCheck($event, item.productId)">
+								<checkbox-group @change="changeCheck($event, item.productId)">
 									<checkbox :value="item.productId" :checked="item.checked" color="#36c1ba" />
 								</checkbox-group>
 								<view class="img-pic">
@@ -156,8 +156,21 @@
 	};
 	
 	const showWriteOrder = () => {
+		if (state.checkIds.length === 0) {
+			uni.showToast({
+				title: '请选择结算商品',
+				icon: 'none'
+			});
+			return false;
+		}
+		const cardIds = [];
+		state.cartList.map(item => {
+			if (item.checked) {
+				cardIds.push(item.id)
+			}
+		})
 		uni.navigateTo({
-			url: '/sub/writeOrder/writeOrder'
+			url: '/sub/writeOrder/writeOrder?cartIds=' + cardIds
 		})
 	};
 	

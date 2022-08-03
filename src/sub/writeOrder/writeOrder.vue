@@ -18,11 +18,27 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue';
+	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
+	import { getShoppingOrderApi } from '@/api/cart';
+	import { SUCCESS_CODE } from '@/utils/request';
+	
+	
+	const state = reactive({
+		cartIds: []
+	});
+	
+	const getShoppingOrder = () => {
+		getShoppingOrderApi(state.cartIds).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				console.log(res);
+			}
+		})
+	}
 	
 	onLoad(ops => {
-		console.log(ops);
+		state.cartIds = ops.cartIds.split(',');
+		getShoppingOrder();
 	})
 </script>
 

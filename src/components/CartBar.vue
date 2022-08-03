@@ -150,7 +150,7 @@
 			}).then(res => {
 				if (res.status === SUCCESS_CODE) {
 					uni.navigateTo({
-						url: '/sub/writeOrder/writeOrder?cartId=' + res.data
+						url: '/sub/writeOrder/writeOrder?cartIds=' + [res.data]
 					})
 				}
 			})
