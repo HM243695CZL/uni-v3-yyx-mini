@@ -17,7 +17,7 @@
 	import { onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { changeCollectionStatusApi } from '@/api/collection';
-	import { saveCartApi } from '@/api/cart';
+	import { saveCartApi, fastAddApi } from '@/api/cart';
 	import store from '@/store';
 	const props = defineProps({
 		isFixed: {
@@ -89,11 +89,11 @@
 		return store.state.userInfo.cartCount;
 	});
 	const onClick = e => {
-		if (e.index === 0) {
-			// 点击收藏
-			if (!userInfo.value.id) {
-				collectionDialog.value.open();
-			} else {
+		if (!userInfo.value.id) {
+			collectionDialog.value.open();
+		} else {
+			if (e.index === 0) {
+				// 点击收藏
 				changeCollectionStatusApi({
 					goodsId: props.goodsId
 				}).then(res => {
@@ -104,6 +104,11 @@
 							state.options[0].icon = 'star';
 						}
 					}
+				})
+			} else {
+				// 点击购物车
+				uni.reLaunch({
+					url: '/pages/shop/shop'
 				})
 			}
 		}
@@ -120,20 +125,36 @@
 			emit('show-choose-spec');
 			return false;
 		}
-		saveCartApi({
-			productId: props.productId,
-			number: props.buyCount,
-			goodsId: props.goodsId
-		}).then(res => {
-			if (res.status === SUCCESS_CODE) {
-				store.dispatch('setCartCount', res.data);
-				uni.setStorageSync('cartCount', res.data);
-				uni.showToast({
-					title: '添加成功',
-					icon: 'success'
-				});
-			}
-		})
+		if (e.index === 0) {
+			// 加入购物车
+			saveCartApi({
+				productId: props.productId,
+				number: props.buyCount,
+				goodsId: props.goodsId
+			}).then(res => {
+				if (res.status === SUCCESS_CODE) {
+					store.dispatch('setCartCount', res.data);
+					uni.setStorageSync('cartCount', res.data);
+					uni.showToast({
+						title: '添加成功',
+						icon: 'success'
+					});
+				}
+			})
+		} else {
+			// 立即购买
+			fastAddApi({
+				productId: props.productId,
+				number: props.buyCount,
+				goodsId: props.goodsId
+			}).then(res => {
+				if (res.status === SUCCESS_CODE) {
+					uni.navigateTo({
+						url: '/sub/writeOrder/writeOrder?cartId=' + res.data
+					})
+				}
+			})
+		}
 	};
 	state.options[1].info = cartCount;
 </script>

@@ -31,3 +31,11 @@ export const emptyCartApi = (data: any) => {
 		data
 	})
 }
+
+export const fastAddApi = (data: any) => {
+	return request({
+		url: preUrl + 'fastAdd',
+		method: 'POST',
+		data
+	})
+}

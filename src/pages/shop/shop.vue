@@ -53,7 +53,7 @@
 			</checkbox-group>
 			<view class="all-price flex-end">
 				总计<text class="settle-price">￥{{state.allPrice}}</text>
-				<view class="settlement">结算</view>
+				<view class="settlement" @click="showWriteOrder()">结算</view>
 			</view>
 		</view>
 	</view>
@@ -152,6 +152,12 @@
 			if (res.status === SUCCESS_CODE) {
 				getCartInfo();
 			}
+		})
+	};
+	
+	const showWriteOrder = () => {
+		uni.navigateTo({
+			url: '/sub/writeOrder/writeOrder'
 		})
 	};
 	

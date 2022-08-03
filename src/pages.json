@@ -88,6 +88,12 @@
 					"style": {
 						"navigationBarTitleText": "意见反馈"
 					}
+				},
+				{
+					"path": "writeOrder/writeOrder",
+					"style": {
+						"navigationBarTitleText": "填写订单"
+					}
 				}
 			]
 		}
