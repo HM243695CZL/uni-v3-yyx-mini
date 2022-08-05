@@ -24,7 +24,7 @@
 										<view class="tag">{{ele}}</view>
 									</view>
 									<view class="price-box flex-between">
-										<view class="price">￥{{item.price}}</view>
+										<view class="price">￥{{(item.price * 100 / 100).toFixed(2)}}</view>
 										<view class="count">x{{item.number}}</view>
 									</view>
 								</view>
@@ -52,7 +52,7 @@
 				</label>
 			</checkbox-group>
 			<view class="all-price flex-end">
-				总计<text class="settle-price">￥{{state.allPrice}}</text>
+				总计<text class="settle-price">￥{{(state.allPrice * 100 / 100).toFixed(2)}}</text>
 				<view class="settlement" @click="showWriteOrder()">结算</view>
 			</view>
 		</view>

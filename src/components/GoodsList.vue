@@ -9,7 +9,7 @@
 				</view>
 				<view class="title text-over">{{item.name}}</view>
 				<view class="flex-between">
-					<view class="price">￥{{item.retailPrice}}</view>
+					<view class="price">￥{{(item.retailPrice * 100 / 100).toFixed(2)}}</view>
 					<uni-icons v-if="item.isHot" color="#ff6146" type="fire" size="20"></uni-icons>
 				</view>
 			</view>

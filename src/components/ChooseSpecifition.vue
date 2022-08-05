@@ -5,7 +5,7 @@
 				<view class="goods-desc flex-start">
 					<image class="img-goods" mode="aspectFill" :src="props.info.goods.picUrl"></image>
 					<view class="info">
-						<text class="price">￥{{state.currentPrice}}</text>
+						<text class="price">￥{{(state.currentPrice * 100 / 100).toFixed(2)}}</text>
 						<text class="tip">
 							<text v-if="state.typeName.length === state.unselectedName.length">
 								请选择 <text class="tag" v-for="item in state.typeName" :key="item">{{item}}</text>

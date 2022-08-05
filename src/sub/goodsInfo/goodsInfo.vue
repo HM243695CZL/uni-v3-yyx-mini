@@ -13,8 +13,8 @@
 		<view class="goods-info">
 			<text class="brief">{{state.goodsInfo.goods.brief}}</text>
 			<view class="price flex-start">
-				<text class="counter-price">原价: ￥{{state.goodsInfo.goods.counterPrice}}</text>
-				<text class="view-retail-price">现价: ￥{{state.goodsInfo.goods.retailPrice}}</text>
+				<text class="counter-price">原价: ￥{{(state.goodsInfo.goods.counterPrice * 100 / 100).toFixed(2)}}</text>
+				<text class="view-retail-price">现价: ￥{{(state.goodsInfo.goods.retailPrice * 100 / 100).toFixed(2)}}</text>
 			</view>
 		</view>
 		<view class="select-specification flex-between" @click="chooseSpecification()">

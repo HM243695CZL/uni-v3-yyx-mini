@@ -17,7 +17,7 @@
 							<view class="name text-over">{{item.name}}</view>
 							<view class="brief text-over">{{item.brief}}</view>
 							<view class="price flex-between">
-								￥{{item.retailPrice}}
+								￥{{(item.retailPrice * 100 / 100).toFixed(2)}}
 							</view>
 						</view>
 					</view>
