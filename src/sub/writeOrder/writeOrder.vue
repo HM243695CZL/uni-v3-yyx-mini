@@ -50,7 +50,7 @@
 		</view>
 		<view class="total-bar">
 			总计：<view class="price">￥{{(state.orderTotalPrice * 100 / 100).toFixed(2)}}</view>
-			<view class="sub-btn">提交订单</view>
+			<view class="sub-btn" @click="clickSubmit()">提交订单</view>
 		</view>
 	</view>
 </template>
@@ -60,6 +60,7 @@
 	import { onLoad } from '@dcloudio/uni-app';
 	import { getShoppingOrderApi } from '@/api/cart';
 	import {getAddressInfoApi} from '@/api/address';
+	import {submitOrderInfoApi} from '@/api/order';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
@@ -105,6 +106,18 @@
 			state.addressId = data;
 			getAddressInfo();
 		}
+	};
+	
+	const clickSubmit = () => {
+		submitOrderInfoApi({
+			addresId: state.addressId,
+			cartIds: state.cartIds,
+			message: state.remark
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				console.log(res);
+			}
+		})
 	};
 	
 	onLoad(ops => {
