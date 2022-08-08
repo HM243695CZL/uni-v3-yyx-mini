@@ -35,8 +35,6 @@ export const request = ({url, method, data}: RequestObj, showLoading: boolean = 
 			}
 			if (res.data.status === SUCCESS_CODE) {
 				resolve(res.data)
-			} else if(res.data.status === 404){
-				
 			} else {
 				uni.showToast({
 					icon: 'error',

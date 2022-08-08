@@ -92,13 +92,15 @@
 	};
 	
 	const getAddressInfo = () => {
-		getAddressInfoApi({
-			id: state.addressId
-		}).then(res => {
-			if (res.status === SUCCESS_CODE) {
-				state.addressInfo = res.data;
-			}
-		})
+		if (state.addressId) {
+			getAddressInfoApi({
+				id: state.addressId
+			}).then(res => {
+				if (res.status === SUCCESS_CODE) {
+					state.addressInfo = res.data;
+				}
+			})
+		}
 	};
 	
 	const getAddressId = data => {
