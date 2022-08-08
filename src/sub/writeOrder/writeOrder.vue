@@ -39,7 +39,7 @@
 			</view>
 			<view class="list-item flex-start">
 				<view class="key">运费</view>
-				<view class="value price">￥{{(state.fregihtPrice * 100 / 100).toFixed(2)}}</view>
+				<view class="value price">￥{{(state.freightPrice * 100 / 100).toFixed(2)}}</view>
 			</view>
 			<view class="list-item flex-start">
 				<view class="key">备注</view>
@@ -67,7 +67,7 @@
 		cartIds: [],
 		checkedGoodsList: [],
 		checkedGoodsPrice: 0,
-		fregihtPrice: 0,
+		freightPrice: 0,
 		orderTotalPrice: 0,
 		remark: '',
 		addressId: uni.getStorageSync('addressId'),
@@ -79,7 +79,7 @@
 			if (res.status === SUCCESS_CODE) {
 				state.checkedGoodsList = res.data.checkedGoodsList;
 				state.checkedGoodsPrice = res.data.checkedGoodsPrice;
-				state.fregihtPrice = res.data.fregihtPrice;
+				state.freightPrice = res.data.freightPrice;
 				state.orderTotalPrice = res.data.orderTotalPrice;
 			}
 		})
@@ -109,8 +109,15 @@
 	};
 	
 	const clickSubmit = () => {
+		if (!state.addressId) {
+			uni.showToast({
+				title: '请选择收货地址',
+				icon: 'none'
+			});
+			return false;
+		};
 		submitOrderInfoApi({
-			addresId: state.addressId,
+			addressId: state.addressId,
 			cartIds: state.cartIds,
 			message: state.remark
 		}).then(res => {

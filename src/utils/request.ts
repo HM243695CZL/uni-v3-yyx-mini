@@ -1,4 +1,4 @@
-export const baseUrl = 'http://192.168.2.105:9090/wx/';
+export const baseUrl = 'http://192.168.1.15:9090/wx/';
 export const SUCCESS_CODE = 200;
 interface RequestObj {
 	url: string;
@@ -35,6 +35,8 @@ export const request = ({url, method, data}: RequestObj, showLoading: boolean = 
 			}
 			if (res.data.status === SUCCESS_CODE) {
 				resolve(res.data)
+			} else if(res.data.status === 404){
+				
 			} else {
 				uni.showToast({
 					icon: 'error',
