@@ -94,6 +94,12 @@
 					"style": {
 						"navigationBarTitleText": "填写订单"
 					}
+				},
+				{
+					"path": "goPayment/goPayment",
+					"style": {
+						"navigationBarTitleText": "去支付"
+					}
 				}
 			]
 		}
