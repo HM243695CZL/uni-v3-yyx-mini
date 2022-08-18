@@ -8,7 +8,7 @@
 		</view>
 		<view class="order-status-list flex-between">
 			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value" @click="showOrderList(item)">
-				<uni-icons class="icon" :type="item.icon" size="30"></uni-icons>
+				<uni-icons class="icon" custom-prefix="iconfont" :type="'icon-' + item.icon" size="30"></uni-icons>
 				{{item.text}}
 			</view>
 		</view>
@@ -18,7 +18,7 @@
 				@click="clickIconItem(item)"
 			 >
 				<view class="icon-list-item-left flex-start">
-					<uni-icons class="icon" :type="item.icon" size="20"></uni-icons>
+					<uni-icons custom-prefix="iconfont" :type="'icon-' + item.icon" size="20"></uni-icons>
 					<view class="item-text">{{item.text}}</view>
 				</view>
 				<uni-icons class="icon" type="right" size="20"></uni-icons>
@@ -41,17 +41,18 @@
 	import store from '@/store';
 	const state = reactive({
 		orderStatusList: [
-			{ value: 'all', text: '全部订单', icon: 'wallet' },
-			{ value: 'pending-pay', text: '待付款', icon: 'settings-filled' },
-			{ value: 'pending-receive', text: '待收货', icon: 'calendar' },
-			{ value: 'pending-evaluate', text: '待评价', icon: 'chat' }
+			{ value: 'all', text: '全部订单', icon: 'order' },
+			{ value: 'pending-pay', text: '待付款', icon: 'To_be_paid' },
+			{ value: 'pending-receive', text: '待收货', icon: 'goods' },
+			{ value: 'pending-evaluate', text: '待评价', icon: 'iconevaluate' },
+			{ value: 'after-sale', text: '售后服务', icon: 'after-sale' }
 		],
 		iconList: [
-			{ value: 'coupon', text: '我的优惠券', icon: 'vip'},
-			{ value: 'address', text: '我的地址', icon: 'location', path: '/sub/addressList/addressList'},
-			{ value: 'paperplane', text: '我的足迹', icon: 'paperplane', path: '/sub/footprintList/footprintList'},
+			{ value: 'coupon', text: '我的优惠券', icon: 'coupons'},
+			{ value: 'address', text: '我的地址', icon: 'address', path: '/sub/addressList/addressList'},
+			{ value: 'paperplane', text: '我的足迹', icon: 'footprint', path: '/sub/footprintList/footprintList'},
 			{ value: 'collection', text: '我的收藏', icon: 'star', path: '/sub/collectionList/collectionList'},
-			{ value: 'advise', text: '意见反馈', icon: 'info', path: '/sub/advise/advise'}
+			{ value: 'advise', text: '意见反馈', icon: 'idea', path: '/sub/advise/advise'}
 		]
 	});
 	const userInfo = computed(() => {
