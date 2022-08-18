@@ -118,18 +118,17 @@
 			});
 			return false;
 		};
-		uni.navigateTo({
-			url: '/sub/goPayment/goPayment'
-		});
-		// submitOrderInfoApi({
-		// 	addressId: state.addressId,
-		// 	cartIds: state.cartIds,
-		// 	message: state.remark
-		// }).then(res => {
-		// 	if (res.status === SUCCESS_CODE) {
-		// 		console.log(res);
-		// 	}
-		// })
+		submitOrderInfoApi({
+			addressId: state.addressId,
+			cartIds: state.cartIds,
+			message: state.remark
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.redirectTo({
+					url: '/sub/goPayment/goPayment?orderId=' + res.data.orderId
+				});
+			}
+		})
 	};
 	
 	onLoad(ops => {

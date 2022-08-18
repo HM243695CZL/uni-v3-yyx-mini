@@ -7,7 +7,7 @@
 			<image v-if="userInfo.id" class="img-avatar" mode="aspectFill" :src="userInfo.avatar"></image>
 		</view>
 		<view class="order-status-list flex-between">
-			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value">
+			<view class="tab-box" v-for="item in state.orderStatusList" :key="item.value" @click="showOrderList(item)">
 				<uni-icons class="icon" :type="item.icon" size="30"></uni-icons>
 				{{item.text}}
 			</view>
@@ -90,6 +90,12 @@
 	const logout = () => {
 		uni.clearStorage();
 		store.dispatch('setUserInfo',{});
+	};
+	
+	const showOrderList = data => {
+		uni.navigateTo({
+			url: '/sub/myOrderList/myOrderList?type=' + data.value
+		});
 	};
 	onLoad(option => {
 		if (!userInfo.value.id) {
