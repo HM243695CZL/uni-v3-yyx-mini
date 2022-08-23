@@ -65,6 +65,7 @@
 	import {getCartInfoApi, changeCheckedApi, emptyCartApi} from '@/api/cart';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import store from '@/store';
+	import UserGoodsList from '@/components/UserGoodsList';
 	
 	const state = reactive({
 		cartList: [],
@@ -181,7 +182,7 @@
 </script>
 
 
-<style lang="scss">
+<style scoped lang="scss">
 	.shop-container{
 		background-color: $uni-color-bg;
 		height: 100%;

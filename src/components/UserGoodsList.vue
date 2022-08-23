@@ -9,7 +9,7 @@
 					@click="clickEmpty($event, item.id)"
 					v-for="item in props.dataList" :key="item.id" 
 				>
-					<view class="list-item flex-start" @click="showGoodsInfo(item.valueId)">
+					<view class="list-item flex-between" @click="showGoodsInfo(item.valueId)">
 						<view class="img-goods">
 							<image class="img" mode="aspectFill" :src="item.picUrl"></image>
 						</view>

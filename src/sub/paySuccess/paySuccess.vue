@@ -27,7 +27,7 @@
 	
 	const showOrderList = () => {
 		uni.redirectTo({
-			url: '/sub/myOrderList/myOrderList?type=all'
+			url: '/sub/myOrderList/myOrderList?type=0'
 		});
 	}
 	

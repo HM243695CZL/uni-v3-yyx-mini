@@ -24,3 +24,19 @@ export const payOrderApi = (data: any) => {
 		data
 	})
 }
+
+export const getOrderListApi = (data: any) => {
+	return request({
+		url: preUrl + 'getOrderList',
+		method: 'POST',
+		data
+	})
+}
+
+export const cancelOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'cancel',
+		method: 'GET',
+		data
+	})
+}
