@@ -1,50 +1,52 @@
 <template>
 	<view class="write-order-container">
-		<view class="address-item" @click="showAddressList()">
-			<view class="address-info">
-				<view class="txt">收货地址</view>
-				<view class="info">
-					<view class="connect-user">
-						{{state.addressInfo.name}}
-						<text class="phone">{{state.addressInfo.tel}}</text>
-					</view>
-					<view class="detail-address">{{state.addressInfo.addressDetail}}</view>
-				</view>
-			</view>
-			<uni-icons class="icon" type="right" size="20"></uni-icons>
-		</view>
-		<view class="product-list">
-			<view class="list-item" v-for="item in state.checkedGoodsList" :key="item.id">
-				<view class="item-box flex-between">
-					<view class="img-pic">
-						<image class="img" mode="aspectFit" :src="item.picUrl"></image>
-					</view>
-					<view class="info text-over">
-						<view class="name text-over">{{item.goodsName}}</view>
-						<view class="tag-list flex-start" v-for="ele in JSON.parse(item.specifications)" :key="ele">
-							<view class="tag">{{ele}}</view>
+		<view class="write-order-box">
+			<view class="address-item" @click="showAddressList()">
+				<view class="address-info">
+					<view class="txt">收货地址</view>
+					<view class="info">
+						<view class="connect-user">
+							{{state.addressInfo.name}}
+							<text class="phone">{{state.addressInfo.tel}}</text>
 						</view>
-						<view class="price-box flex-between">
-							<view class="price">￥{{(item.price * 100 / 100).toFixed(2)}}</view>
-							<view class="count">x{{item.number}}</view>
-						</view>
+						<view class="detail-address">{{state.addressInfo.addressDetail}}</view>
 					</view>
 				</view>
+				<uni-icons class="icon" type="right" size="20"></uni-icons>
 			</view>
-		</view>
-		<view class="info-box">
-			<view class="list-item flex-start">
-				<view class="key">商品金额</view>
-				<view class="value price">￥{{(state.checkedGoodsPrice * 100 / 100).toFixed(2)}}</view>
+			<view class="product-list">
+				<view class="list-item" v-for="item in state.checkedGoodsList" :key="item.id">
+					<view class="item-box flex-between">
+						<view class="img-pic">
+							<image class="img" mode="aspectFit" :src="item.picUrl"></image>
+						</view>
+						<view class="info text-over">
+							<view class="name text-over">{{item.goodsName}}</view>
+							<view class="tag-list flex-start" v-for="ele in JSON.parse(item.specifications)" :key="ele">
+								<view class="tag">{{ele}}</view>
+							</view>
+							<view class="price-box flex-between">
+								<view class="price">￥{{(item.price * 100 / 100).toFixed(2)}}</view>
+								<view class="count">x{{item.number}}</view>
+							</view>
+						</view>
+					</view>
+				</view>
 			</view>
-			<view class="list-item flex-start">
-				<view class="key">运费</view>
-				<view class="value price">￥{{(state.freightPrice * 100 / 100).toFixed(2)}}</view>
-			</view>
-			<view class="list-item flex-start">
-				<view class="key">备注</view>
-				<view class="value">
-					<uni-easyinput v-model="state.remark" placeholder="请输入备注"></uni-easyinput>
+			<view class="info-box">
+				<view class="list-item flex-start">
+					<view class="key">商品金额</view>
+					<view class="value price">￥{{(state.checkedGoodsPrice * 100 / 100).toFixed(2)}}</view>
+				</view>
+				<view class="list-item flex-start">
+					<view class="key">运费</view>
+					<view class="value price">￥{{(state.freightPrice * 100 / 100).toFixed(2)}}</view>
+				</view>
+				<view class="list-item flex-start">
+					<view class="key">备注</view>
+					<view class="value">
+						<uni-easyinput v-model="state.remark" placeholder="请输入备注"></uni-easyinput>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -146,84 +148,88 @@
 	.write-order-container{
 		background-color: $uni-color-bg;
 		height: 100%;
-		.address-item{
-			padding: $uni-padding;
-			margin-bottom: $uni-padding-half;
-			background: $uni-color-white;
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-start;
-			.address-info{
-				display: flex;
-				justify-content: flex-start;
-				align-items: flex-start;
-				flex-direction: column;
-				.info{
-					margin-top: $uni-padding-half;
-					color: $uni-color-9;
-					.phone{
-						margin-left: $uni-padding-half;
-					}
-				}
-			}
-		}
-		.product-list{
-			.list-item{
+		.write-order-box{
+			height: calc(100% - 100rpx);
+			overflow: auto;
+			.address-item{
 				padding: $uni-padding;
 				margin-bottom: $uni-padding-half;
 				background: $uni-color-white;
-				&:last-child{
-					margin-bottom: 0;
-				}
-				.item-box{
-					.img-pic{
-						.img{
-							width: 150rpx;
-							height: 150rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				.address-info{
+					display: flex;
+					justify-content: flex-start;
+					align-items: flex-start;
+					flex-direction: column;
+					.info{
+						margin-top: $uni-padding-half;
+						color: $uni-color-9;
+						.phone{
+							margin-left: $uni-padding-half;
 						}
 					}
-					.info{
-						flex: 1;
-						padding: 0 $uni-padding-half;
-						.tag-list{
-							margin: $uni-padding-half 0;
-							.tag{
-								padding: 6rpx 10rpx;
-								background: $uni-color-base;
-								color: $uni-color-white;
-								margin-right: $uni-padding-half;
-								border-radius: 10rpx;
-								&:last-child{
-									margin-right: 0;
-								}
+				}
+			}
+			.product-list{
+				.list-item{
+					padding: $uni-padding;
+					margin-bottom: $uni-padding-half;
+					background: $uni-color-white;
+					&:last-child{
+						margin-bottom: 0;
+					}
+					.item-box{
+						.img-pic{
+							.img{
+								width: 150rpx;
+								height: 150rpx;
 							}
 						}
-						.price-box{
-							.price{
-								color: $uni-color-price;
+						.info{
+							flex: 1;
+							padding: 0 $uni-padding-half;
+							.tag-list{
+								margin: $uni-padding-half 0;
+								.tag{
+									padding: 6rpx 10rpx;
+									background: $uni-color-base;
+									color: $uni-color-white;
+									margin-right: $uni-padding-half;
+									border-radius: 10rpx;
+									&:last-child{
+										margin-right: 0;
+									}
+								}
 							}
-							.count{
-								color: $uni-color-9;
+							.price-box{
+								.price{
+									color: $uni-color-price;
+								}
+								.count{
+									color: $uni-color-9;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		.info-box{
-			padding: 0 $uni-padding;
-			background-color: $uni-color-white;
-			.list-item{
-				padding: $uni-padding 0;
-				.key{
-					width: 120rpx;
-				}
-				.value{
-					flex: 1;
-					text-align: right;
-				}
-				.price{
-					color: $uni-color-price;
+			.info-box{
+				padding: 0 $uni-padding;
+				background-color: $uni-color-white;
+				.list-item{
+					padding: $uni-padding 0;
+					.key{
+						width: 120rpx;
+					}
+					.value{
+						flex: 1;
+						text-align: right;
+					}
+					.price{
+						color: $uni-color-price;
+					}
 				}
 			}
 		}

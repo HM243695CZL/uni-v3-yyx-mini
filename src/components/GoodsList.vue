@@ -57,7 +57,7 @@
 					}
 				}
 				.title{
-					padding: $uni-padding uni-padding-half;
+					padding: $uni-padding $uni-padding-half;
 				}
 				.price{
 					color: $uni-color-price;

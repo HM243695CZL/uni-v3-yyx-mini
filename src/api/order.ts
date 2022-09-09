@@ -40,3 +40,43 @@ export const cancelOrderApi = (data: any) => {
 		data
 	})
 }
+
+export const refundOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'applyRefund',
+		method: 'POST',
+		data
+	})
+}
+
+export const receiveOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'confirm',
+		method: 'GET',
+		data
+	})
+}
+
+export const deleteOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'delete',
+		method: 'GET',
+		data
+	})
+}
+
+export const getOrderGoodsInfoApi = (data: any) => {
+	return request({
+		url: preUrl + 'orderGoods',
+		method: 'GET',
+		data
+	})
+}
+
+export const commentOrderGoodsApi = (data: any) => {
+	return request({
+		url: preUrl + 'comment',
+		method: 'POST',
+		data
+	})
+}

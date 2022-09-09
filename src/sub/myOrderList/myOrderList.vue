@@ -18,19 +18,24 @@
 					<view class="order-status">{{item.orderStatusText}}</view>
 				</view>
 				<view class="order-goods-list">
-					<view class="item-box flex-between" v-for="ele in item.orderGoodsList" :key="ele.id">
-						<view class="img-pic">
-							<image class="img" mode="aspectFill" :src="ele.picUrl"></image>
+					<view class="item-box " v-for="ele in item.orderGoodsList" :key="ele.id">
+						<view class="goods-info flex-between">
+							<view class="img-pic">
+								<image class="img" mode="aspectFill" :src="ele.picUrl"></image>
+							</view>
+							<view class="info text-over">
+								<view class="name text-over">{{ele.goodsName}}</view>
+								<view class="tag-list flex-start" v-for="e in JSON.parse(ele.specifications)" :key="e">
+									<view class="tag">{{e}}</view>
+								</view>
+								<view class="price-box flex-between">
+									<view class="price">￥{{(ele.price * 100 / 100).toFixed(2)}}</view>
+									<view class="count">x{{ele.number}}</view>
+								</view>
+							</view>
 						</view>
-						<view class="info text-over">
-							<view class="name text-over">{{ele.goodsName}}</view>
-							<view class="tag-list flex-start" v-for="e in JSON.parse(ele.specifications)" :key="e">
-								<view class="tag">{{e}}</view>
-							</view>
-							<view class="price-box flex-between">
-								<view class="price">￥{{(ele.price * 100 / 100).toFixed(2)}}</view>
-								<view class="count">x{{ele.number}}</view>
-							</view>
+						<view class="comment-btn flex-end" v-if="item.handleOption.comment && (ele.comment === 0)">
+							<view class="btn" @click="clickComment(ele)">去评价</view>
 						</view>
 					</view>
 				</view>
@@ -43,17 +48,29 @@
 						<view class="btn" v-if="item.handleOption.cancel" @click="cancelOrder(item)">取消订单</view>
 						<view class="btn" v-if="item.handleOption.pay" @click="goPay(item)">去支付</view>
 						<view class="btn" v-if="item.handleOption.refund" @click="applyRefund(item)">申请退款</view>
-						<view class="btn" v-if="item.handleOption.confirm">确认收货</view>
-						<view class="btn" v-if="item.handleOption.delete">删除订单</view>
-						<view class="btn" v-if="item.handleOption.comment">去评价</view>
+						<view class="btn" v-if="item.handleOption.logistics">查看物流</view>
+						<view class="btn" v-if="item.handleOption.confirm" @click="orderReceive(item)">确认收货</view>
+						<view class="btn" v-if="item.handleOption.delete" @click="clickDelete(item)">删除订单</view>
 					</view>
 				</view>
 			</view>
 			<view class="no-data" v-if="state.dataList.length === 0">暂无数据</view>
 		</view>
 		<uni-popup ref="refundDialog" type="dialog">
-			<uni-popup-dialog cancelText="取消" confirmText="确定退款" title="提示" @confirm="clickConfirm">
-				是否确定申请退款？
+			<uni-popup-dialog cancelText="取消" confirmText="确定退款" title="请选择退款原因" @confirm="clickRefundConfirm">
+				 <view class="select-list">
+					 <uni-data-checkbox
+					  v-model="state.reason" 
+					  :localdata="state.reasonList"
+					  selectedColor="#36c1ba"
+					  selectedTextColor="#36c1ba"
+					  ></uni-data-checkbox>
+				 </view>
+			</uni-popup-dialog>
+		</uni-popup>
+		<uni-popup ref="confirmDialog" type="dialog">
+			<uni-popup-dialog cancelText="取消" confirmText="确认" title="提示" @confirm="clickReceiveConfirm">
+				<view>确认收货后无法撤销！</view>
 			</uni-popup-dialog>
 		</uni-popup>
 	</view>
@@ -61,8 +78,9 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import { onLoad } from '@dcloudio/uni-app';
-	import { getOrderListApi, cancelOrderApi } from '@/api/order';
+	import { onLoad, onShow } from '@dcloudio/uni-app';
+	import { getOrderListApi, cancelOrderApi, refundOrderApi,
+	 receiveOrderApi, deleteOrderApi } from '@/api/order';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
@@ -71,14 +89,25 @@
 		pageIndex: 1,
 		pageSize: 20,
 		tabBar: {
-			0: '全部订单',
+			0: '全部',
 			1: '待付款',
-			2: '待收货',
-			3: '待评价'
+			2: '待发货',
+			3: '待收货',
+			4: '待评价'
 		},
-		refundId: ''
+		orderId: '',
+		reason: 1,
+		reasonList: [
+			{ text: '收到商品破损', value: 1 },
+			{ text: '商品错发/漏发', value: 2 },
+			{ text: '商品需要维修', value: 3 },
+			{ text: '收到商品与描述不符', value: 4 },
+			{ text: '商品质量问题', value: 5 },
+			{ text: '不想买了/买错了', value: 6 }
+		]
 	});
 	const refundDialog = ref();
+	const confirmDialog = ref();
 	
 	const getOrderList = () => {
 		getOrderListApi({
@@ -91,6 +120,7 @@
 			}
 		})
 	};
+	
 	
 	const changeTabBar = key => {
 		if (state.type === key) return false;
@@ -130,22 +160,92 @@
 	 * 申请退款
 	 */
 	const applyRefund = data => {
-		state.refundId = data.id;
+		state.orderId = data.id;
 		refundDialog.value.open();
 	};
 	
 	/**
 	 * 确定退款
 	 */
-	const clickConfirm = () => {
-		
+	const clickRefundConfirm = () => {
+		let refundReason = '';
+		state.reasonList.map(item => {
+			if (item.value === state.reason) {
+				refundReason = item.text;
+			}
+		})
+		refundOrderApi({
+			orderId: state.orderId,
+			refundReason
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.showToast({
+					title: '已申请退款',
+					icon: 'success'
+				});
+				getOrderList();
+			}
+		})
 	};
+	
+	/**
+	 * 点击确认收货
+	 */
+	const orderReceive = data => {
+		state.orderId = data.id;
+		confirmDialog.value.open();
+	};
+	
+	/**
+	 * 确认收货
+	 */
+	const clickReceiveConfirm = () => {
+		receiveOrderApi({
+			orderId: state.orderId
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.showToast({
+					icon: 'success'
+				});
+				getOrderList();
+			}
+		})
+	};
+	
+	/**
+	 * 点击删除
+	 */
+	const clickDelete = data => {
+		deleteOrderApi({
+			orderId: data.id
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				uni.showToast({
+					title: '删除成功',
+					icon: 'success'
+				});
+				getOrderList();
+			}
+		})
+	};
+	
+	/**
+	 * 点击去评价
+	 */
+	const clickComment = data => {
+		uni.navigateTo({
+			url: '/sub/commentGoods/commentGoods?orderGoodsId=' + data.id
+		})
+	}
 	
 	
 	onLoad(ops => {
 		state.type = ops.type;
 		getOrderList();
-	})
+	});
+	onShow(() => {
+		getOrderList();
+	});
 </script>
 
 <style scoped lang="scss">
@@ -231,6 +331,16 @@
 							}
 						}
 					}
+					.comment-btn{
+						margin-top: $uni-padding-half;
+						.btn{
+							padding: 8rpx 16rpx;
+							border-radius: 10rpx;
+							border: 1px solid $uni-color-text;
+							font-size: $uni-font-size-sm;
+							color: $uni-color-text;
+						}
+					}
 				}
 				.foot{
 					padding: $uni-padding-half 0;
@@ -257,5 +367,8 @@
 				}
 			}
 		}
+	}
+	.select-list{
+		width: 200rxp;
 	}
 </style>

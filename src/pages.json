@@ -112,6 +112,12 @@
 					"style": {
 						"navigationBarTitleText": "我的订单"
 					}
+				},
+				{
+					"path": "commentGoods/commentGoods",
+					"style": {
+						"navigationBarTitleText": "评价商品"
+					}
 				}
 			]
 		}

@@ -41,10 +41,11 @@
 	import store from '@/store';
 	const state = reactive({
 		orderStatusList: [
-			{ value: '0', text: '全部订单', icon: 'order' },
+			{ value: '0', text: '全部', icon: 'order' },
 			{ value: '1', text: '待付款', icon: 'To_be_paid' },
-			{ value: '2', text: '待收货', icon: 'goods' },
-			{ value: '3', text: '待评价', icon: 'iconevaluate' }
+			{ value: '2', text: '待发货', icon: 'To_be_paid'},
+			{ value: '3', text: '待收货', icon: 'goods' },
+			{ value: '4', text: '待评价', icon: 'iconevaluate' }
 		],
 		iconList: [
 			{ value: 'coupon', text: '我的优惠券', icon: 'coupons'},
