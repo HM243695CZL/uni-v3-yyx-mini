@@ -37,6 +37,9 @@
 						<view class="comment-btn flex-end" v-if="item.handleOption.comment && (ele.comment === 0)">
 							<view class="btn" @click="clickComment(ele)">去评价</view>
 						</view>
+						<view class="rebuy-btn flex-end" v-if="item.handleOption.reBuy && (ele.comment !== 0)">
+							<view class="btn" @click="clickRebuy(ele)">再次购买</view>
+						</view>
 					</view>
 				</view>
 				<view class="foot flex-between">
@@ -236,7 +239,16 @@
 		uni.navigateTo({
 			url: '/sub/commentGoods/commentGoods?orderGoodsId=' + data.id
 		})
-	}
+	};
+	
+	/**
+	 * 点击再次购买
+	 */
+	const clickRebuy = data => {
+		uni.navigateTo({
+			url: '/sub/goodsInfo/goodsInfo?id=' + data.goodsId
+		})
+	};
 	
 	
 	onLoad(ops => {
@@ -331,7 +343,7 @@
 							}
 						}
 					}
-					.comment-btn{
+					.comment-btn, .rebuy-btn{
 						margin-top: $uni-padding-half;
 						.btn{
 							padding: 8rpx 16rpx;
