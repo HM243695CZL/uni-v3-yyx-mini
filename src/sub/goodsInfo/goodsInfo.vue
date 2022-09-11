@@ -21,6 +21,30 @@
 			<view class="title">请选择规格数量</view>
 			<uni-icons class="icon" type="right" size="20"></uni-icons>
 		</view>
+		<view class="comment-box" v-if="state.commentCount > 0">
+			<view class="comment-head flex-between">
+				<view class="comment-count">评论({{state.commentCount}})</view>
+				<view class="show-all" @click="showAllComment()">
+					查看全部
+					<uni-icons class="icon" type="right" size="20"></uni-icons>
+				</view>
+			</view>
+			<view class="comment-content">
+				<view class="comment-item" v-for="item in state.commentList" :key="item.id">
+					<view class="comment-info flex-between">
+						<view class="comment-user">{{item.username}}</view>
+						<view class="comment-time">{{item.addTime}}</view>
+					</view>
+					<view class="content">{{item.content}}</view>
+					<view class="imgs flex-start">
+						<image mode="aspectFit" v-for="ele in JSON.parse(item.picUrls)" :key="ele" :src="ele"></image>
+					</view>
+					<view class="reply" v-if="item.adminContent !== ''">
+						商家回复：<text class="reply-content">{{item.adminContent}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="params">
 			<view class="params-title">商品参数</view>
 			<view class="params-row" v-for="item in state.goodsInfo.attributes" :key="item.id">
@@ -54,7 +78,7 @@
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { getGoodsInfoApi } from '@/api/goods';
+	import { getGoodsInfoApi, getGoodsCommentsApi } from '@/api/goods';
 	import { getIssueListApi } from '@/api/issue';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import ParseHtml from '@/components/ParseHtml';
@@ -82,6 +106,8 @@
 			selectedBackgroundColor: '#fff',
 			selectedBorder: '1px #fff solid'
 		},
+		commentList: [],
+		commentCount: 0,
 		questionList: [],
 		loadStatus: false
 	});
@@ -107,7 +133,7 @@
 	};
 	
 	const getIssueList = () => {
-		getIssueListApi().then(res => {
+		getIssueListApi('').then(res => {
 			if (res.status === SUCCESS_CODE) {
 				state.questionList = res.data;
 			}
@@ -117,6 +143,7 @@
 	const chooseSpecification = () => {
 		chooseSpecifitionRef.value.openPopup()
 	};
+	
 	const getCurrentPath = data => {
 		const pages = getCurrentPages();
 		const currentRoute = pages[pages.length - 1].route;
@@ -128,11 +155,32 @@
 		}
 		state.currentPath = '/' + currentRoute + params;
 	};
+	
+	const getGoodsComments = () => {
+		getGoodsCommentsApi({
+			pageIndex: 1,
+			pageSize: 2,
+			goodsId: state.goodsId
+		}).then(res => {
+			if (res.status === SUCCESS_CODE) {
+				state.commentList = res.data.list;
+				state.commentCount = res.data.total;
+			}
+		})
+	};
+	
+	const showAllComment = () => {
+		uni.navigateTo({
+			url: '/sub/commentList/commentList?goodsId=' + state.goodsId
+		})
+	};
+	
 	onLoad(option => {
 		state.goodsId = option.id;
 		getGoodsInfo();
 		getIssueList();
 		getCurrentPath(option);
+		getGoodsComments();
 	})
 </script>
 
@@ -180,6 +228,50 @@
 		.select-specification{
 			background-color: $uni-color-white;
 			padding: $uni-padding;
+		}
+		.comment-box{
+			margin-top: $uni-padding;
+			background-color: $uni-color-white;
+			padding: $uni-padding;
+			box-sizing: border-box;
+			.comment-head{
+				padding-bottom: $uni-padding;
+			}
+			.comment-content{
+				border-top: 1px solid $uni-color-bd;
+				.comment-item{
+					border-bottom: 1px solid $uni-color-bd;
+					padding: $uni-padding 0;
+					&:last-child{
+						border: none;
+					}
+					.comment-info{
+						padding-bottom: $uni-padding;
+						.comment-time{
+							font-size: $uni-font-size-sm;
+							color: $uni-color-9;
+						}
+					}
+					.imgs{
+						padding-top: $uni-padding;
+						image{
+							width: 150rpx;
+							height: 150rpx;
+							border-radius: $uni-padding-half;
+							margin-right: $uni-padding-half;
+						}
+					}
+					.reply{
+						margin-top: $uni-padding;
+						border-radius: $uni-padding-half;
+						padding: $uni-padding;
+						background-color: #f4f4f4;
+						.reply-content{
+							color: $uni-color-9;
+						}
+					}
+				}
+			}
 		}
 		.params{
 			margin-top: $uni-padding;

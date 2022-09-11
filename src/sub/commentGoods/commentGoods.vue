@@ -37,6 +37,7 @@
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({
+		goodsId: '',
 		orderGoodsId: '',
 		orderGoodsInfo: {},
 		star: 0,
@@ -65,6 +66,7 @@
 		}).then(res => {
 			if (res.status === SUCCESS_CODE) {
 				state.orderGoodsInfo = res.data;
+				state.goodsId = res.data.goodsId;
 			}
 		})
 	};
@@ -106,7 +108,8 @@
 			content: state.content,
 			picUrls: JSON.stringify(state.picUrls),
 			hasPicture: state.picUrls.length > 0,
-			valueId: state.orderGoodsId,
+			valueId: state.goodsId,
+			orderGoodsId: state.orderGoodsId,
 			type: 0
 		}).then(res => {
 			if (res.status === SUCCESS_CODE) {

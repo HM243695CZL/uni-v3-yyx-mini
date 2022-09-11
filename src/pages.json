@@ -118,6 +118,12 @@
 					"style": {
 						"navigationBarTitleText": "评价商品"
 					}
+				},
+				{
+					"path": "commentList/commentList",
+					"style": {
+						"navigationBarTitleText": "评价列表"
+					}
 				}
 			]
 		}

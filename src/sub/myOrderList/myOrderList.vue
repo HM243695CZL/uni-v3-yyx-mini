@@ -54,6 +54,7 @@
 						<view class="btn" v-if="item.handleOption.logistics">查看物流</view>
 						<view class="btn" v-if="item.handleOption.confirm" @click="orderReceive(item)">确认收货</view>
 						<view class="btn" v-if="item.handleOption.delete" @click="clickDelete(item)">删除订单</view>
+						<view class="btn" v-if="item.handleOption.afterSale && item.afterSaleStatus === 0">申请售后</view>
 					</view>
 				</view>
 			</view>

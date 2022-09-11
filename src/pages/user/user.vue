@@ -48,7 +48,7 @@
 			{ value: '4', text: '待评价', icon: 'iconevaluate' }
 		],
 		iconList: [
-			{ value: 'coupon', text: '我的优惠券', icon: 'coupons'},
+			// { value: 'coupon', text: '我的优惠券', icon: 'coupons'},
 			{ value: 'address', text: '我的地址', icon: 'address', path: '/sub/addressList/addressList'},
 			{ value: 'paperplane', text: '我的足迹', icon: 'footprint', path: '/sub/footprintList/footprintList'},
 			{ value: 'collection', text: '我的收藏', icon: 'star', path: '/sub/collectionList/collectionList'},
