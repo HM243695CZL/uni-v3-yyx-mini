@@ -34,8 +34,8 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive, toRefs, computed } from 'vue';
-	import { onLoad, onShow } from '@dcloudio/uni-app';
+	import { reactive, computed } from 'vue';
+	import { onLoad } from '@dcloudio/uni-app';
 	import { getUserInfoApi } from '@/api/user';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import store from '@/store';
@@ -43,12 +43,12 @@
 		orderStatusList: [
 			{ value: '0', text: '全部', icon: 'order' },
 			{ value: '1', text: '待付款', icon: 'To_be_paid' },
-			{ value: '2', text: '待发货', icon: 'To_be_paid'},
+			{ value: '2', text: '待发货', icon: '-Shipped'},
 			{ value: '3', text: '待收货', icon: 'goods' },
 			{ value: '4', text: '待评价', icon: 'iconevaluate' }
 		],
 		iconList: [
-			// { value: 'coupon', text: '我的优惠券', icon: 'coupons'},
+			{ value: 'afterSale', text: '我的售后', icon: 'after-sale', path: '/sub/afterSale/afterSale'},
 			{ value: 'address', text: '我的地址', icon: 'address', path: '/sub/addressList/addressList'},
 			{ value: 'paperplane', text: '我的足迹', icon: 'footprint', path: '/sub/footprintList/footprintList'},
 			{ value: 'collection', text: '我的收藏', icon: 'star', path: '/sub/collectionList/collectionList'},

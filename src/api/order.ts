@@ -80,3 +80,11 @@ export const commentOrderGoodsApi = (data: any) => {
 		data
 	})
 }
+
+export const afterSaleOrderApi = (data: any) => {
+	return request({
+		url: preUrl + 'afterSale',
+		method: 'POST',
+		data
+	})
+}

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2874311 */
-  src: url('iconfont.woff2?t=1660789706526') format('woff2'),
-       url('iconfont.woff?t=1660789706526') format('woff'),
-       url('iconfont.ttf?t=1660789706526') format('truetype');
+  src: url('iconfont.woff2?t=1663233949308') format('woff2'),
+       url('iconfont.woff?t=1663233949308') format('woff'),
+       url('iconfont.ttf?t=1663233949308') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon--Shipped:before {
+  content: "\e63d";
+}
+
+.icon-after-sale1:before {
+  content: "\e70b";
 }
 
 .icon-goods:before {

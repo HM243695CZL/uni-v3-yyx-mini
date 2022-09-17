@@ -54,7 +54,7 @@
 						<view class="btn" v-if="item.handleOption.logistics">查看物流</view>
 						<view class="btn" v-if="item.handleOption.confirm" @click="orderReceive(item)">确认收货</view>
 						<view class="btn" v-if="item.handleOption.delete" @click="clickDelete(item)">删除订单</view>
-						<view class="btn" v-if="item.handleOption.afterSale && item.afterSaleStatus === 0">申请售后</view>
+						<view class="btn" v-if="item.handleOption.afterSale && item.afterSaleStatus === 0" @click="clickApplyAfterSale(item)">申请售后</view>
 					</view>
 				</view>
 			</view>
@@ -126,7 +126,7 @@
 	};
 	
 	
-	const changeTabBar = key => {
+	const changeTabBar = (key: any) => {
 		if (state.type === key) return false;
 		state.type = key;
 		state.pageIndex = 1;
@@ -250,6 +250,15 @@
 			url: '/sub/goodsInfo/goodsInfo?id=' + data.goodsId
 		})
 	};
+	
+	/**
+	 * 点击申请售后
+	 */
+	const clickApplyAfterSale = data => {
+		uni.navigateTo({
+			url: '/sub/applyAfterSale/applyAfterSale?id=' + data.id
+		});
+	}
 	
 	
 	onLoad(ops => {
