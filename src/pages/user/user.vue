@@ -64,7 +64,7 @@
 			url: '/sub/loginMethod/loginMethod'
 		})
 	};
-	const getUserInfo = refresh => {
+	const getUserInfo = () => {
 		getUserInfoApi({
 			refresh: true
 		}).then(res => {
@@ -77,7 +77,7 @@
 			}
 		})
 	};
-	const clickIconItem = data => {
+	const clickIconItem = (data: any) => {
 		if (!userInfo.value.id) {
 			uni.navigateTo({
 				url: '/sub/loginMethod/loginMethod'
@@ -93,7 +93,7 @@
 		store.dispatch('setUserInfo',{});
 	};
 	
-	const showOrderList = data => {
+	const showOrderList = (data: any) => {
 		uni.navigateTo({
 			url: '/sub/myOrderList/myOrderList?type=' + data.value
 		});

@@ -1,37 +1,37 @@
 import {request} from '@/utils/request';
 const preUrl = 'cms/user/';
-export const getSessionIdApi = (data, status) => {
+export const getSessionIdApi = (data: any, status: boolean) => {
 	return request({
 		url: preUrl + 'getSessionId',
-		method: 'get',
+		method: 'GET',
 		data
 	}, status)
 }
 
-export const authLoginApi = data => {
+export const authLoginApi = (data: any) => {
 	return request({
 		url: preUrl + 'loginByWeixin',
-		method: 'post',
+		method: 'POST',
 		data
 	})
 }
 
-export const getUserInfoApi = data => {
+export const getUserInfoApi = (data: any) => {
 	return request({
 		url: preUrl + 'getUserInfo?refresh=' + data.refresh,
-		method: 'get'
+		method: 'GET'
 	})
 }
 
-export const accountRegisterApi = data => {
+export const accountRegisterApi = (data: any) => {
 	return request({
 		url: preUrl + 'register',
-		method: 'post',
+		method: 'POST',
 		data
 	})
 }
 
-export const accountLoginApi = data => {
+export const accountLoginApi = (data: any) => {
 	return request({
 		url: preUrl + 'accountLogin',
 		method: 'post',

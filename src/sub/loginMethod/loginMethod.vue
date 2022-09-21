@@ -2,7 +2,7 @@
 	<view class="login-temp-container flex-center">
 		<view class="btn-box w100">
 			<button @click="showLogin()">账号登录</button>
-			<button open-type="getUserInfo" @getuserinfo="getUserInfo" type="primary">微信一键登录</button>
+			<button v-if="state.sessionId !== ''" open-type="getUserInfo" @getuserinfo="getUserInfo" type="primary">微信一键登录</button>
 		</view>
 	</view>
 </template>
@@ -14,7 +14,8 @@
 	import { getSessionIdApi, authLoginApi }  from '@/api/user';
 	
 	const state = reactive({
-		prevPath: ''
+		prevPath: '',
+		sessionId: ''
 	})
 	
 	const getUserInfo = (info: any) => {
@@ -69,6 +70,7 @@
 					code: res.code
 				}, false).then(result => {
 					if (result.status === SUCCESS_CODE) {
+						state.sessionId = result.data.sessionId;
 						uni.setStorageSync('sessionId', result.data.sessionId);
 					}
 				})
@@ -81,6 +83,7 @@
 		})
 	};
 	onShow(() => {
+		state.sessionId = '';
 		uni.checkSession({
 			success: data => {
 				getSessionId()

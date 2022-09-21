@@ -42,6 +42,7 @@
 				<CartBar :goodsId="props.info.goods.id" :is-fixed="false"
 					:buy-count="state.buyCount"
 					:product-id="state.productId"
+					@hide-choose-sepc="hidePop()"
 				 />
 			</view>
 		</uni-popup>
@@ -150,13 +151,16 @@
 			state.currentPrice = '';
 		}
 	};
-	const changeBuyCount = value => {
+	const changeBuyCount = (value: any) => {
 		state.buyCount = value;
 	};
 	const popupRef = ref();
 	const openPopup = () => {
 		popupRef.value.open('bottom');
 		initData();
+	};
+	const hidePop = () => {
+		popupRef.value.close();
 	};
 	defineExpose({
 		openPopup

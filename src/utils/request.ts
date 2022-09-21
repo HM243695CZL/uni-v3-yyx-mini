@@ -1,5 +1,8 @@
+import store from '@/store';
+
 export const baseUrl = 'http://192.168.0.101:9090/wx/';
 export const SUCCESS_CODE = 200;
+
 interface RequestObj {
 	url: string;
 	method: string;
@@ -35,6 +38,13 @@ export const request = ({url, method, data}: RequestObj, showLoading: boolean = 
 			}
 			if (res.data.status === SUCCESS_CODE) {
 				resolve(res.data)
+			} else if(res.data.status === 401) {
+				uni.showToast({
+					icon: 'error',
+					title: res.data.message
+				});
+				uni.clearStorage();
+				store.dispatch('setUserInfo', {})
 			} else {
 				uni.showToast({
 					icon: 'error',

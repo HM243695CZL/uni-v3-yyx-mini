@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
 	import { ref, reactive, computed } from 'vue';
-	import { onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { changeCollectionStatusApi } from '@/api/collection';
 	import { saveCartApi, fastAddApi } from '@/api/cart';
@@ -43,7 +42,7 @@
 			type: String
 		}
 	});
-	const emit = defineEmits('show-choose-spec');
+	const emit = defineEmits('show-choose-spec', 'hide-choose-sepc');
 	const collectionDialog = ref();
 	const state = reactive({
 		cartStyle: {
@@ -139,6 +138,7 @@
 						title: '添加成功',
 						icon: 'success'
 					});
+					emit('hide-choose-sepc');
 				}
 			})
 		} else {
