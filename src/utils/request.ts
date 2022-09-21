@@ -55,6 +55,12 @@ export const request = ({url, method, data}: RequestObj, showLoading: boolean = 
 			if (showLoading) {
 				uni.hideLoading();
 			}
+			if (response.errMsg === 'request:fail ') {
+				uni.showToast({
+					icon: 'error',
+					title: '服务器未启动'
+				});
+			}
 			reject(response)
 		})
 	})
