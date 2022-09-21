@@ -31,7 +31,7 @@
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import {onShow, onLoad} from '@dcloudio/uni-app';
-	import {getAddressListApi, emptyAddressApi, setDefaultAddressApi} from '@/api/address';
+	import {getAddressListApi, emptyAddressApi, setDefaultAddressApi} from '@/sub/api/address';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({

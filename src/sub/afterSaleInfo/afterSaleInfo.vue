@@ -96,7 +96,7 @@
 <script lang="ts" setup>
 	import { reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { getAfterSaleInfoApi } from '@/api/afterSale';
+	import { getAfterSaleInfoApi } from '@/sub/api/afterSale';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({

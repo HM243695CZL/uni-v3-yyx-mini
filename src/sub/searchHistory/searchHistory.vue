@@ -32,13 +32,13 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive, computed } from 'vue';
+	import {  reactive, computed } from 'vue';
 	import {onLoad} from '@dcloudio/uni-app';
 	import {
 		getSearchHelperApi, getSearchHistoryListApi, 
 		getSearchGoodsListApi, getRecommendAndHotKeywordApi,
 		emptySearchHistoryApi
-	} from '@/api/search';
+	} from '@/sub/api/search';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import UserGoodsList from '@/components/UserGoodsList';
 	import store from '@/store';
@@ -61,12 +61,12 @@
 		return store.state.userInfo.userInfo;
 	});
 	
-	const search = value => {
+	const search = () => {
 		state.helperList = [];
 		getSearchGoodsList();
 	};
 	
-	const input = value => {
+	const input = () => {
 		if (timer) {
 			clearTimeout(timer);
 		}

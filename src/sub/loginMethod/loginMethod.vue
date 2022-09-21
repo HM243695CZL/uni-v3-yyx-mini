@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive } from 'vue';
+	import { reactive } from 'vue';
 	import { onShow, onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import { getSessionIdApi, authLoginApi }  from '@/api/user';
@@ -17,7 +17,7 @@
 		prevPath: ''
 	})
 	
-	const getUserInfo = (info) => {
+	const getUserInfo = (info: any) => {
 		const wxAuth = {
 			encryptedData: info.detail.encryptedData,
 			iv: info.detail.iv,

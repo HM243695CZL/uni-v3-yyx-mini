@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 	import { reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { getAfterSaleListApi} from '@/api/afterSale';
+	import { getAfterSaleListApi} from '@/sub/api/afterSale';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({

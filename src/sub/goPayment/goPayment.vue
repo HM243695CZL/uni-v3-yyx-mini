@@ -47,11 +47,11 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive } from 'vue';
+	import { reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { getOrderInfoApi, payOrderApi } from '@/api/order';
+	import { getOrderInfoApi, payOrderApi } from '@/sub/api/order';
 	import { SUCCESS_CODE } from '@/utils/request';
-	import { timestampToDate} from '@/utils/tool';
+	import { timestampToDate} from '@/sub/utils/tool';
 	
 	const state = reactive({
 		payMethod: 'wx',

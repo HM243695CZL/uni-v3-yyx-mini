@@ -84,7 +84,7 @@
 	import { ref, reactive } from 'vue';
 	import { onLoad, onShow } from '@dcloudio/uni-app';
 	import { getOrderListApi, cancelOrderApi, refundOrderApi,
-	 receiveOrderApi, deleteOrderApi } from '@/api/order';
+	 receiveOrderApi, deleteOrderApi } from '@/sub/api/order';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({

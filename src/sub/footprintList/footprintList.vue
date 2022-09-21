@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive } from 'vue';
+	import { reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
 	import { getFootprintListApi } from '@/api/footprint';
 	import UserGoodsList from '@/components/UserGoodsList';

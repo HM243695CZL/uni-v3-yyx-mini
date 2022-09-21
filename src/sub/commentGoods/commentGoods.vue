@@ -30,10 +30,10 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive } from 'vue';
+	import { reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { getOrderGoodsInfoApi, commentOrderGoodsApi } from '@/api/order';
-	import {policyApi} from '@/api/oss';
+	import { getOrderGoodsInfoApi, commentOrderGoodsApi } from '@/sub/api/order';
+	import {policyApi} from '@/sub/api/oss';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const state = reactive({

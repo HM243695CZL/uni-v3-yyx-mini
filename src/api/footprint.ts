@@ -1,7 +1,7 @@
 import { request } from '@/utils/request';
 const preUrl = 'footprint/';
 
-export const getFootprintListApi = data => {
+export const getFootprintListApi = () => {
 	return request({
 		url: preUrl + 'getFootprintList',
 		method: 'get'

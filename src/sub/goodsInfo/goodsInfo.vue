@@ -79,7 +79,7 @@
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
 	import { getGoodsInfoApi, getGoodsCommentsApi } from '@/api/goods';
-	import { getIssueListApi } from '@/api/issue';
+	import { getIssueListApi } from '@/sub/api/issue';
 	import { SUCCESS_CODE } from '@/utils/request';
 	import ParseHtml from '@/components/ParseHtml';
 	import CartBar from '@/components/CartBar';

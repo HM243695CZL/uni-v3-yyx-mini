@@ -97,8 +97,8 @@
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
 	import { SUCCESS_CODE } from '@/utils/request';
-	import {getOrderInfoApi, afterSaleOrderApi } from '@/api/order';
-	import {policyApi} from '@/api/oss';
+	import {getOrderInfoApi, afterSaleOrderApi } from '@/sub/api/order';
+	import {policyApi} from '@/sub/api/oss';
 	
 	const state = reactive({
 		orderId: '',

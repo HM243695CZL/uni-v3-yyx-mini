@@ -38,8 +38,8 @@
 
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
-	import {policyApi} from '@/api/oss';
-	import {saveFeedbackApi} from '@/api/feedback';
+	import {policyApi} from '@/sub/api/oss';
+	import {saveFeedbackApi} from '@/sub/api/feedback';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const formRef = ref();

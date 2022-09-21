@@ -41,8 +41,8 @@
 <script setup lang="ts">
 	import { ref, reactive } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app';
-	import { saveAddressApi } from '@/api/address';
-	import { getRegionListApi} from '@/api/region';
+	import { saveAddressApi } from '@/sub/api/address';
+	import { getRegionListApi} from '@/sub/api/region';
 	import { SUCCESS_CODE } from '@/utils/request';
 	
 	const formRef = ref();
